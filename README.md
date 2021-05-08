@@ -1,4 +1,4 @@
-H Fancy Notes
+# Fancy Notes
 
 Editor de texto simples com um visual mais elegante, moderno e personalizável do que o tradicional que vem junto ao Windows.
 
