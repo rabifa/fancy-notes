@@ -6,7 +6,6 @@ Editor de texto simples com um visual mais elegante, moderno e personalizável d
 
 ## Tecnology
 
-- Node
 - Electron
-- HTML
-- CSS
+- React
+- Typescript
