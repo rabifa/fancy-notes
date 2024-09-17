@@ -1,8 +1,13 @@
 # FancyNotes
 
-Editor de texto simples com um visual mais elegante, moderno e personalizável do que o tradicional que vem junto ao Windows.
+Simple text editor with a fancy/cool and modern look than the traditional one from Mycrosoft Windowns.
+<div align="center">
+  
+![FancyNotes Screenshot](https://github.com/rabifa/fancynotes/blob/main/FancyNotes.png "FancyNotes")
 
-[https://www.figma.com/file/PpgeYgFa4v3ie940ST2KNE/Raven-Notes](https://www.figma.com/design/PpgeYgFa4v3ie940ST2KNE/FancyNotes)
+</div>
+
+You can also see on Figma: [https://www.figma.com/file/PpgeYgFa4v3ie940ST2KNE/Raven-Notes](https://www.figma.com/design/PpgeYgFa4v3ie940ST2KNE/FancyNotes)
 
 ## Tecnology
 
