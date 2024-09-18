@@ -3,6 +3,7 @@
 Simple text editor with a fancy/cool and modern look than the traditional one from Mycrosoft Windowns.
 
 <div align="center">
+
   ![FancyNotes Screenshot](https://github.com/rabifa/fancynotes/blob/main/FancyNotes.png "FancyNotes Screenshot")
 
   <!-- License -->
