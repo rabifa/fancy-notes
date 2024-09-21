@@ -1,0 +1,39 @@
+.titlebar {
+  height: 25px;
+  width: 100vw;
+  background-color: #36393F;
+  display: flex;
+  align-items: center;
+}
+
+.titlebar > p {
+  font-size: 12px;
+  padding: 2px 0 6px 5px;
+}
+
+.appIcon {
+  width: 30px;
+  height: 100%;
+  padding: 2px 0 3px 12px;
+}
+
+.window-controls button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 16px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.window-controls button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.drag {
+  -webkit-app-region: drag
+}
+
+.no-drag {
+  -webkit-app-region: no-drag
+}
