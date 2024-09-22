@@ -17,6 +17,10 @@
   padding: 2px 0 3px 12px;
 }
 
+.appIcon:hover {
+  cursor: pointer;
+}
+
 .window-controls button {
   background: none;
   border: none;
@@ -26,8 +30,9 @@
   cursor: pointer;
 }
 
-.window-controls button:hover {
+.window-controls a:hover {
   background-color: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
 }
 
 .drag {

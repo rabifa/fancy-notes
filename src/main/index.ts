@@ -1,4 +1,4 @@
-import { app, shell, BrowserWindow /*ipcMain*/ } from 'electron'
+import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
@@ -52,7 +52,11 @@ app.whenReady().then(() => {
   })
 
   // IPC test
-  // ipcMain.on('ping', () => console.log('pong'))
+  ipcMain.on('ping', () => console.log('pong'))
+  // ipcMain.on('close-app', () => {
+  //   console.log('pong')
+  //   app.quit()
+  // })
 
   createWindow()
 
