@@ -1,0 +1,30 @@
+.optionBar {
+  background-color: #696D79;
+  height: 25px;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+}
+
+.fileOption,
+.textOption,
+.fontOption,
+.alignOption {
+  display: flex;
+  flex-direction: row;
+}
+
+.fileOption {
+  justify-content: flex-end;
+  width: 10%;
+}
+
+.textOption,
+.fontOption,
+.alignOption {
+  margin: 0 15px;
+}
+
+button {
+  cursor: pointer;
+}

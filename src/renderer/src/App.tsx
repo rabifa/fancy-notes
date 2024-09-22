@@ -1,9 +1,9 @@
-import TitleBar from './components/TitleBar'
-function App(): JSX.Element {
- 
+import { TitleBar, Option } from '@renderer/components'
+export  const App = () => {
   return (
     <>
       <TitleBar />
+      <Option />
     </>
   )
 }

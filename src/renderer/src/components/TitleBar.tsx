@@ -1,7 +1,6 @@
-import React from 'react'
-import icon from '../../../../resources/icon.png'
+import icon from '../../../../resources/icon.png' 
 
-const TitleBar: React.FC = () => {
+export const TitleBar = () => {
 
   const handleMinimize = () => {
     window.electronAPI.minimize();
@@ -37,23 +36,5 @@ const TitleBar: React.FC = () => {
     </>
   );
 };
-
-// const styles = {
-//   titleBar: {
-//     display: 'flex',
-//     justifyContent: 'flex-end',
-//     backgroundColor: '#2f2f2f',
-//     padding: '10px'
-//   },
-//   button: {
-//     background: 'none',
-//     border: 'none',
-//     color: 'white',
-//     fontSize: '16px',
-//     marginLeft: '10px',
-//     cursor: 'pointer',
-//     padding: '5px'
-//   }
-// }
 
 export default TitleBar
