@@ -14,7 +14,7 @@ function createWindow(): void {
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
-      sandbox: true,
+      sandbox: false,
       contextIsolation: true
     }
   })
@@ -26,6 +26,23 @@ function createWindow(): void {
   mainWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)
     return { action: 'deny' }
+  })
+
+  // Escuta eventos do ipcRenderer para controlar a janela
+  ipcMain.on('window:minimize', () => {
+    mainWindow?.minimize()
+  })
+
+  ipcMain.on('window:maximize', () => {
+    if (mainWindow?.isMaximized()) {
+      mainWindow.unmaximize()
+    } else {
+      mainWindow?.maximize()
+    }
+  })
+
+  ipcMain.on('window:close', () => {
+    mainWindow?.close()
   })
 
   // HMR for renderer base on electron-vite cli.
@@ -50,13 +67,6 @@ app.whenReady().then(() => {
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)
   })
-
-  // IPC test
-  ipcMain.on('ping', () => console.log('pong'))
-  // ipcMain.on('close-app', () => {
-  //   console.log('pong')
-  //   app.quit()
-  // })
 
   createWindow()
 

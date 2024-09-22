@@ -1,38 +1,51 @@
-.titlebar {
+.titleBar {
   height: 25px;
   width: 100vw;
   background-color: #36393F;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  padding: 10px
 }
 
-.titlebar > p {
+.titleBarElements {
+  display: flex;
+  flex-direction: row;
+}
+
+.title {
   font-size: 12px;
   padding: 2px 0 6px 5px;
 }
 
 .appIcon {
-  width: 30px;
+  width: 16px;
   height: 100%;
-  padding: 2px 0 3px 12px;
+  padding: 2px 0 3px;
+  align-self: center;
 }
 
 .appIcon:hover {
   cursor: pointer;
 }
 
-.window-controls button {
+.windowControls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.windowControls button {
   background: none;
   border: none;
   color: white;
   font-size: 16px;
-  margin-left: 10px;
   cursor: pointer;
+  padding: 5px 10px;
 }
 
-.window-controls a:hover {
+.windowControls button:hover {
   background-color: rgba(255, 255, 255, 0.2);
-  cursor: pointer;
 }
 
 .drag {
