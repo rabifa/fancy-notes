@@ -1,53 +1,93 @@
-.titleBar {
-  height: 25px;
+.titlebar {
+  height: 36px;
   width: 100vw;
-  background-color: #36393F;
+  background-color: var(--bg-panel);
+  border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px
+  padding: 0 12px;
+  box-sizing: border-box;
+  user-select: none;
 }
 
-.titleBarElements {
+.titlebar.drag {
+  -webkit-app-region: drag;
+}
+
+.titlebar .no-drag {
+  -webkit-app-region: no-drag;
+}
+
+.titlebar-brand {
   display: flex;
-  flex-direction: row;
-}
-
-.title {
-  font-size: 12px;
-  padding: 2px 0 6px 5px;
-}
-
-.appIcon {
-  width: 16px;
-  height: 100%;
-  padding: 2px 0 3px;
-  align-self: center;
-}
-
-.windowControls {
-  display: flex;
-  justify-content: flex-end;
   align-items: center;
+  gap: 8px;
 }
 
-.windowControls button {
-  background: none;
+.titlebar-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.titlebar-logo-text {
+  font-family: var(--font-family-header);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.titlebar-logo-text .logo-vault {
+  color: var(--cyan-neon);
+  text-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+}
+
+.titlebar-logo-text .logo-notes {
+  color: var(--pink-neon);
+  text-shadow: 0 0 8px rgba(255, 0, 127, 0.4);
+}
+
+.titlebar-title {
+  font-family: var(--font-family-header);
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 2px;
+  max-width: 400px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.titlebar-controls {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.control-btn {
+  background: transparent;
   border: none;
-  color: white;
-  font-size: 16px;
+  color: var(--text-muted);
+  width: 42px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  padding: 3px 10px;
+  transition: all 0.2s ease;
 }
 
-.windowControls button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+.control-btn:hover {
+  color: #ffffff;
 }
 
-.drag {
-  -webkit-app-region: drag
+.control-btn.minimize:hover,
+.control-btn.maximize:hover {
+  background-color: var(--bg-control);
+  color: var(--cyan-neon);
 }
 
-.no-drag {
-  -webkit-app-region: no-drag
+.control-btn.close:hover {
+  background-color: #e81123;
+  color: #ffffff;
 }

@@ -1,11 +1,12 @@
-import { TitleBar, Option } from '@renderer/components'
+import { Titlebar, Option } from '@renderer/components'
 export  const App = () => {
   return (
     <>
-      <TitleBar />
+      <Titlebar />
       <Option />
     </>
   )
 }
+
 
 export default App
