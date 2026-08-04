@@ -1,5 +1,42 @@
-node_modules
-dist
-out
+# Dependency directories
+node_modules/
+
+# Compilation and build outputs
+dist/
+out/
+release/
+package/
+*.tsbuildinfo
+
+# Logs and diagnostics
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE and editors
+.idea/
+.vscode/*.log
+.vscode/tasks.json
+.vscode/launch.json
+.vscode/settings.json
+*.suo
+*.sw?
+
+# OS files
 .DS_Store
-*.log*
+Thumbs.db
+
+# Local env configs
+.env
+.env.local
+.env.*.local
+
+# Vite cache
+.vite/
+
+# Local testing vaults and temporary folders
+*vault*/
+Nova pasta/
+
