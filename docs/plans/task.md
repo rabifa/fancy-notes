@@ -9,7 +9,7 @@
 | Task 1: Install Required Dependencies | Done | Installed `@tiptap/*`, `lucide-react`, `chokidar`, `electron-store` |
 | Task 2: Main Process IPC Handlers & Vault Management | Done | Implement `vaultManager.ts` & register `ipcMain` channels |
 | Task 3: Preload API Bridge & Types Definition | Done | Define IPC types and expose `window.api.vault` |
-| Task 4: Cyberpunk Dark Neon CSS Theme & Fonts | Pending | Set up theme tokens from Paper & font imports |
+| Task 4: Cyberpunk Dark Neon CSS Theme & Fonts | Done | Set up theme tokens from Paper & font imports |
 | Task 5: Custom Titlebar Component | Pending | Build frameless titlebar with custom window controls |
 | Task 6: Sidebar, Note List & Bottom Left Vault Selector | Pending | Build Sidebar, SearchBar, NoteCards & VaultSelector |
 | Task 7: TipTap Editor & Custom Formatting Toolbar | Pending | Build TipTap editor with full formatting options |
