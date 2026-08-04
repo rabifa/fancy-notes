@@ -2,10 +2,77 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import {
+  selectVaultFolder,
+  getActiveVault,
+  setActiveVault,
+  listVaultNotes,
+  readNote,
+  saveNote,
+  createNote,
+  deleteNote,
+  renameNote,
+  exportTxt,
+  toggleFavorite,
+  watchVault,
+  unwatchVault
+} from './vaultManager'
+
+let mainWindow: BrowserWindow | null = null
+
+function registerIpcHandlers(): void {
+  ipcMain.handle('vault:select-folder', async () => {
+    return selectVaultFolder(mainWindow || undefined)
+  })
+
+  ipcMain.handle('vault:get-active-vault', async () => {
+    return getActiveVault()
+  })
+
+  ipcMain.handle('vault:set-active-vault', async (_, vaultPath: string) => {
+    return setActiveVault(vaultPath)
+  })
+
+  ipcMain.handle('vault:list-notes', async (_, vaultPath: string) => {
+    return listVaultNotes(vaultPath)
+  })
+
+  ipcMain.handle('vault:read-note', async (_, notePath: string) => {
+    return readNote(notePath)
+  })
+
+  ipcMain.handle('vault:save-note', async (_, notePath: string, content: string) => {
+    return saveNote(notePath, content)
+  })
+
+  ipcMain.handle('vault:create-note', async (_, vaultPath: string, title: string, extension: string) => {
+    return createNote(vaultPath, title, extension)
+  })
+
+  ipcMain.handle('vault:delete-note', async (_, notePath: string) => {
+    return deleteNote(notePath)
+  })
+
+  ipcMain.handle('vault:rename-note', async (_, notePath: string, newTitle: string) => {
+    return renameNote(notePath, newTitle)
+  })
+
+  ipcMain.handle('vault:export-txt', async (_, notePath: string, content: string) => {
+    return exportTxt(notePath, content, mainWindow || undefined)
+  })
+
+  ipcMain.handle('vault:toggle-favorite', async (_, notePath: string) => {
+    return toggleFavorite(notePath)
+  })
+
+  ipcMain.handle('vault:watch-changes', async (event, vaultPath: string) => {
+    return watchVault(vaultPath, event.sender)
+  })
+}
 
 function createWindow(): void {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 900,
     height: 600,
     show: false,
@@ -20,7 +87,7 @@ function createWindow(): void {
   })
 
   mainWindow.on('ready-to-show', () => {
-    mainWindow.show()
+    mainWindow?.show()
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {
@@ -68,6 +135,7 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
 
+  registerIpcHandlers()
   createWindow()
 
   app.on('activate', function () {
@@ -81,6 +149,7 @@ app.whenReady().then(() => {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
+  unwatchVault()
   if (process.platform !== 'darwin') {
     app.quit()
   }
