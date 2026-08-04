@@ -11,7 +11,7 @@
 | Task 3: Preload API Bridge & Types Definition | Done | Define IPC types and expose `window.api.vault` |
 | Task 4: Cyberpunk Dark Neon CSS Theme & Fonts | Done | Set up theme tokens from Paper & font imports |
 | Task 5: Custom Titlebar Component | Done | Build frameless titlebar with custom window controls |
-| Task 6: Sidebar, Note List & Bottom Left Vault Selector | Pending | Build Sidebar, SearchBar, NoteCards & VaultSelector |
+| Task 6: Sidebar, Note List & Bottom Left Vault Selector | Done | Build Sidebar, SearchBar, NoteCards & VaultSelector |
 | Task 7: TipTap Editor & Custom Formatting Toolbar | Pending | Build TipTap editor with full formatting options |
 | Task 8: Status Bar & Onboarding Modal | Pending | Build EditorFooter status bar & OnboardingModal |
 | Task 9: Application State Integration | Pending | Connect `useVault`, `useNotes` hooks & assemble `App.tsx` |
