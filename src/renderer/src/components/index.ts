@@ -6,6 +6,9 @@ export * from './sidebar/NoteCard'
 export * from './sidebar/VaultSelector'
 export * from './editor/TipTapEditor'
 export * from './editor/EditorToolbar'
+export * from './editor/EditorFooter'
+export * from './modals/OnboardingModal'
+
 
 
 
