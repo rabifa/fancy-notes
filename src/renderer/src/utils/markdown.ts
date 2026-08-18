@@ -17,19 +17,19 @@ export function textToHtml(text: string): string {
 
 export function parseInline(text: string): string {
   let html = text
-  
+
   // Convert standard markdown inline styles
   // Bold (** or __)
   html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
   html = html.replace(/__(.*?)__/g, '<strong>$1</strong>')
-  
+
   // Italic (* or _)
   html = html.replace(/\*(.*?)\*/g, '<em>$1</em>')
   html = html.replace(/_(.*?)_/g, '<em>$1</em>')
-  
+
   // Inline code (`)
   html = html.replace(/`(.*?)`/g, '<code>$1</code>')
-  
+
   return html
 }
 
@@ -139,114 +139,119 @@ export function htmlToMarkdown(html: string): string {
   const parser = new DOMParser()
   const doc = parser.parseFromString(html, 'text/html')
   const rawMarkdown = nodeToMarkdown(doc.body)
-  
+
   // Clean up excessive consecutive newlines (more than 2)
   return rawMarkdown.replace(/\n{3,}/g, '\n\n').trim()
 }
 
 function nodeToMarkdown(node: Node): string {
   let markdown = ''
-  
+
   for (let i = 0; i < node.childNodes.length; i++) {
     const child = node.childNodes[i]
-    
+
     if (child.nodeType === Node.TEXT_NODE) {
       markdown += child.textContent
     } else if (child.nodeType === Node.ELEMENT_NODE) {
       const el = child as HTMLElement
       const tagName = el.tagName.toLowerCase()
-      
+
       switch (tagName) {
         case 'h1':
           markdown += `# ${childrenToMarkdown(el)}\n\n`
-          break;
+          break
         case 'h2':
           markdown += `## ${childrenToMarkdown(el)}\n\n`
-          break;
+          break
         case 'h3':
           markdown += `### ${childrenToMarkdown(el)}\n\n`
-          break;
+          break
         case 'h4':
           markdown += `#### ${childrenToMarkdown(el)}\n\n`
-          break;
+          break
         case 'h5':
           markdown += `##### ${childrenToMarkdown(el)}\n\n`
-          break;
+          break
         case 'h6':
           markdown += `###### ${childrenToMarkdown(el)}\n\n`
-          break;
-        case 'p':
+          break
+        case 'p': {
           const parentName = el.parentElement?.tagName.toLowerCase()
           if (parentName === 'li') {
             markdown += childrenToMarkdown(el)
           } else {
             markdown += `${childrenToMarkdown(el)}\n\n`
           }
-          break;
+          break
+        }
         case 'strong':
         case 'b':
           markdown += `**${childrenToMarkdown(el)}**`
-          break;
+          break
         case 'em':
         case 'i':
           markdown += `*${childrenToMarkdown(el)}*`
-          break;
+          break
         case 'u':
           markdown += `<u>${childrenToMarkdown(el)}</u>`
-          break;
+          break
         case 'code':
           markdown += `\`${el.textContent}\``
-          break;
+          break
         case 'br':
           markdown += '\n'
-          break;
+          break
         case 'ul':
           markdown += childrenToMarkdown(el)
           if (el.parentElement?.tagName.toLowerCase() !== 'li') {
             markdown += '\n'
           }
-          break;
-        case 'ol':
+          break
+        case 'ol': {
           let counter = 1
           for (let c = 0; c < el.childNodes.length; c++) {
             const li = el.childNodes[c]
             if (li.nodeName.toLowerCase() === 'li') {
-              ;(li as any)._olIndex = counter++
+              ;(li as ChildNode & { _olIndex?: number })._olIndex = counter++
             }
           }
           markdown += childrenToMarkdown(el)
           if (el.parentElement?.tagName.toLowerCase() !== 'li') {
             markdown += '\n'
           }
-          break;
-        case 'li':
-          const isTaskItem = el.getAttribute('data-type') === 'taskItem' || el.hasAttribute('data-checked')
+          break
+        }
+        case 'li': {
+          const isTaskItem =
+            el.getAttribute('data-type') === 'taskItem' || el.hasAttribute('data-checked')
           if (isTaskItem) {
             const checked = el.getAttribute('data-checked') === 'true'
             markdown += `- [${checked ? 'x' : ' '}] ${childrenToMarkdown(el)}\n`
           } else {
-            const olIndex = (el as any)._olIndex
+            const olIndex = (el as HTMLElement & { _olIndex?: number })._olIndex
             if (olIndex !== undefined) {
               markdown += `${olIndex}. ${childrenToMarkdown(el)}\n`
             } else {
               markdown += `- ${childrenToMarkdown(el)}\n`
             }
           }
-          break;
-        case 'span':
+          break
+        }
+        case 'span': {
           const style = el.getAttribute('style')
           if (style) {
             markdown += `<span style="${style}">${childrenToMarkdown(el)}</span>`
           } else {
             markdown += childrenToMarkdown(el)
           }
-          break;
+          break
+        }
         case 'blockquote':
           markdown += `> ${childrenToMarkdown(el)}\n\n`
-          break;
+          break
         case 'hr':
           markdown += '---\n\n'
-          break;
+          break
         default:
           if (el.getAttribute('style') || el.getAttribute('class')) {
             const serializedChildren = childrenToMarkdown(el)
@@ -259,11 +264,11 @@ function nodeToMarkdown(node: Node): string {
           } else {
             markdown += childrenToMarkdown(el)
           }
-          break;
+          break
       }
     }
   }
-  
+
   return markdown
 }
 

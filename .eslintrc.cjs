@@ -7,7 +7,12 @@ module.exports = {
     '@electron-toolkit/eslint-config-prettier'
   ],
   rules: {
-    '@typescipt-eslint/explicit-function-return-type': 'on',
-    '@typescipt-eslint/no-unused-vars': 'off'
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/no-unused-vars': 'off'
+  },
+  settings: {
+    react: {
+      version: 'detect'
+    }
   }
 }
