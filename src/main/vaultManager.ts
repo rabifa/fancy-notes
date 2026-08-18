@@ -5,13 +5,14 @@ import { FSWatcher, watch } from 'chokidar'
 import Store from 'electron-store'
 
 // Initialize the electron-store
-const store = new Store({
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const store: any = new Store({
   defaults: {
     vaults: [] as string[],
     activeVaultPath: null as string | null,
     favorites: [] as string[]
   }
-}) as any
+})
 
 let watcher: FSWatcher | null = null
 
@@ -148,7 +149,6 @@ export async function listVaultNotes(vaultPath: string): Promise<NoteMetadata[]>
   }
 }
 
-
 /**
  * Reads the UTF-8 content of a note.
  */
@@ -183,7 +183,7 @@ export async function createNote(
 
   const baseName = title.trim() || 'Untitled'
   const ext = extension.startsWith('.') ? extension.toLowerCase() : `.${extension.toLowerCase()}`
-  
+
   let fileName = `${baseName}${ext}`
   let fullPath = path.join(vaultPath, fileName)
   let counter = 1

@@ -42,7 +42,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <Plus size={16} />
             </button>
             {onToggleSidebar && (
-              <button className="sidebar-action-btn toggle-btn" onClick={onToggleSidebar} title="Recolher Sidebar">
+              <button
+                className="sidebar-action-btn toggle-btn"
+                onClick={onToggleSidebar}
+                title="Recolher Sidebar"
+              >
                 <ListCollapse size={16} />
               </button>
             )}
@@ -54,7 +58,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div className="sidebar-note-list scrollbar-custom">
         {notes.length === 0 ? (
           <div className="sidebar-empty">
-            {vaultState.activeVaultPath ? 'Nenhuma nota encontrada.' : 'Selecione um Vault para começar.'}
+            {vaultState.activeVaultPath
+              ? 'Nenhuma nota encontrada.'
+              : 'Selecione um Vault para começar.'}
           </div>
         ) : (
           notes.map((note) => (

@@ -110,32 +110,16 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
         >
           <Columns size={16} />
         </button>
-        <button
-          className="toolbar-btn text-pink"
-          onClick={onDeleteNote}
-          title="Excluir Nota"
-        >
+        <button className="toolbar-btn text-pink" onClick={onDeleteNote} title="Excluir Nota">
           <Trash2 size={16} />
         </button>
-        <button
-          className="toolbar-btn"
-          onClick={onDuplicateNote}
-          title="Duplicar Nota"
-        >
+        <button className="toolbar-btn" onClick={onDuplicateNote} title="Duplicar Nota">
           <Copy size={16} />
         </button>
-        <button
-          className="toolbar-btn"
-          onClick={onExportTxt}
-          title="Exportar para .txt"
-        >
+        <button className="toolbar-btn" onClick={onExportTxt} title="Exportar para .txt">
           <Download size={16} />
         </button>
-        <button
-          className="toolbar-btn text-cyan"
-          onClick={onCreateNote}
-          title="Nova Nota"
-        >
+        <button className="toolbar-btn text-cyan" onClick={onCreateNote} title="Nova Nota">
           <Plus size={16} />
         </button>
       </div>

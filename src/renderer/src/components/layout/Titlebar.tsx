@@ -1,6 +1,6 @@
 import React from 'react'
 import { Minus, Square, X } from 'lucide-react'
-import icon from '../../../../resources/icon.png'
+import icon from '../../../../../resources/icon.png'
 
 interface TitlebarProps {
   activeNoteTitle?: string

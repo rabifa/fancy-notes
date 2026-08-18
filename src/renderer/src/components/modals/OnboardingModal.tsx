@@ -6,10 +6,7 @@ interface OnboardingModalProps {
   onSelectFolder: () => Promise<void>
 }
 
-export const OnboardingModal: React.FC<OnboardingModalProps> = ({
-  isOpen,
-  onSelectFolder
-}) => {
+export const OnboardingModal: React.FC<OnboardingModalProps> = ({ isOpen, onSelectFolder }) => {
   const [isSelecting, setIsSelecting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -41,17 +38,13 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
         </div>
 
         <h2 className="onboarding-title">VAULT NOTES</h2>
-        
+
         <p className="onboarding-desc">
-          Organize suas anotações com visual Cyberpunk e formatação rica. 
-          Para começar, selecione uma pasta no seu computador para ser seu primeiro <strong>Vault</strong> (cofre).
+          Organize suas anotações com visual Cyberpunk e formatação rica. Para começar, selecione
+          uma pasta no seu computador para ser seu primeiro <strong>Vault</strong> (cofre).
         </p>
 
-        <button 
-          className="onboarding-btn" 
-          onClick={handleSelect}
-          disabled={isSelecting}
-        >
+        <button className="onboarding-btn" onClick={handleSelect} disabled={isSelecting}>
           <FolderOpen size={16} />
           <span>{isSelecting ? 'SELECIONANDO...' : 'SELECIONAR PASTA VAULT'}</span>
         </button>

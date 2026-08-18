@@ -45,9 +45,12 @@ function registerIpcHandlers(): void {
     return saveNote(notePath, content)
   })
 
-  ipcMain.handle('vault:create-note', async (_, vaultPath: string, title: string, extension: string) => {
-    return createNote(vaultPath, title, extension)
-  })
+  ipcMain.handle(
+    'vault:create-note',
+    async (_, vaultPath: string, title: string, extension: string) => {
+      return createNote(vaultPath, title, extension)
+    }
+  )
 
   ipcMain.handle('vault:delete-note', async (_, notePath: string) => {
     return deleteNote(notePath)

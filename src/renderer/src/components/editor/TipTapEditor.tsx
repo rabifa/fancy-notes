@@ -43,7 +43,6 @@ export const TipTapEditor: React.FC<TipTapEditorProps> = ({
   onContentChange,
   onStatsChange
 }) => {
-  
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -68,20 +67,18 @@ export const TipTapEditor: React.FC<TipTapEditorProps> = ({
     onUpdate: ({ editor }) => {
       const html = editor.getHTML()
       const text = editor.getText()
-      
+
       // Calculate character and word count
       const charCount = text.length
       const wordCount = text.trim() === '' ? 0 : text.trim().split(/\s+/).length
-      
+
       if (onStatsChange) {
         onStatsChange(wordCount, charCount)
       }
 
       // Convert back to save format
-      const convertedContent = noteExtension === '.txt' 
-        ? text 
-        : htmlToMarkdown(html)
-      
+      const convertedContent = noteExtension === '.txt' ? text : htmlToMarkdown(html)
+
       onContentChange(convertedContent)
     }
   })
@@ -90,14 +87,13 @@ export const TipTapEditor: React.FC<TipTapEditorProps> = ({
   useEffect(() => {
     if (!editor || notePath === null) return
 
-    const htmlContent = noteExtension === '.txt' 
-      ? textToHtml(noteContent) 
-      : markdownToHtml(noteContent)
+    const htmlContent =
+      noteExtension === '.txt' ? textToHtml(noteContent) : markdownToHtml(noteContent)
 
     // Check if the content is actually different to avoid cursor jumps while typing
     if (editor.getHTML() !== htmlContent && !editor.isFocused) {
       editor.commands.setContent(htmlContent, { emitUpdate: false })
-      
+
       // Calculate and trigger stats updates immediately on load
       const text = editor.getText()
       const charCount = text.length
@@ -120,7 +116,9 @@ export const TipTapEditor: React.FC<TipTapEditorProps> = ({
       <div className="editor-empty-state">
         <div className="empty-state-icon">⚡</div>
         <p className="empty-state-title">VAULT NOTES</p>
-        <p className="empty-state-text">Selecione uma nota na sidebar ou crie uma nova para começar a editar.</p>
+        <p className="empty-state-text">
+          Selecione uma nota na sidebar ou crie uma nova para começar a editar.
+        </p>
       </div>
     )
   }

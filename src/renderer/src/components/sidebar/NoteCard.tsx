@@ -9,7 +9,12 @@ interface NoteCardProps {
   onToggleFavorite: (e: React.MouseEvent) => void
 }
 
-export const NoteCard: React.FC<NoteCardProps> = ({ note, isActive, onClick, onToggleFavorite }) => {
+export const NoteCard: React.FC<NoteCardProps> = ({
+  note,
+  isActive,
+  onClick,
+  onToggleFavorite
+}) => {
   const formatTime = (timestamp: number) => {
     const date = new Date(timestamp)
     return date.toLocaleDateString('pt-BR', {
