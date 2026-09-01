@@ -83,6 +83,15 @@ export const TipTapEditor: React.FC<TipTapEditorProps> = ({
     }
   })
 
+  const [localTitle, setLocalTitle] = React.useState<string>(noteTitle || '')
+  const titleInputRef = React.useRef<HTMLInputElement>(null)
+  const prevNotePathRef = React.useRef<string | null>(null)
+  const committedTitleRef = React.useRef<string>(noteTitle || '')
+
+  useEffect(() => {
+    committedTitleRef.current = noteTitle || ''
+  }, [noteTitle])
+
   // Synchronize when switching notes or when external updates happen
   useEffect(() => {
     if (!editor || notePath === null) return
@@ -104,12 +113,42 @@ export const TipTapEditor: React.FC<TipTapEditorProps> = ({
     }
   }, [notePath, noteContent, editor, noteExtension])
 
-  // Focus the editor when note switches
+  // Sync title and focus when active note changes
   useEffect(() => {
-    if (editor && notePath) {
-      editor.commands.focus()
+    if (notePath !== prevNotePathRef.current) {
+      prevNotePathRef.current = notePath
+      setLocalTitle(noteTitle || '')
+      committedTitleRef.current = noteTitle || ''
+
+      if (editor && notePath && document.activeElement !== titleInputRef.current) {
+        editor.commands.focus()
+      }
+    } else {
+      // If noteTitle changed externally and user is not actively typing in the input
+      if (document.activeElement !== titleInputRef.current) {
+        setLocalTitle(noteTitle || '')
+        committedTitleRef.current = noteTitle || ''
+      }
     }
-  }, [notePath, editor])
+  }, [notePath, noteTitle, editor])
+
+  const handleCommitTitle = () => {
+    const trimmed = localTitle.trim()
+    if (trimmed && trimmed !== committedTitleRef.current && onRenameNote) {
+      committedTitleRef.current = trimmed
+      onRenameNote(trimmed)
+    } else if (!trimmed) {
+      setLocalTitle(committedTitleRef.current)
+    }
+  }
+
+  const handleTitleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' || e.key === 'Tab') {
+      e.preventDefault()
+      handleCommitTitle()
+      editor?.commands.focus()
+    }
+  }
 
   if (!notePath) {
     return (
@@ -137,10 +176,13 @@ export const TipTapEditor: React.FC<TipTapEditorProps> = ({
       <div className="editor-workspace scrollbar-custom">
         <div className="editor-title-container">
           <input
+            ref={titleInputRef}
             type="text"
             className="editor-title-input"
-            value={noteTitle || ''}
-            onChange={(e) => onRenameNote && onRenameNote(e.target.value)}
+            value={localTitle}
+            onChange={(e) => setLocalTitle(e.target.value)}
+            onBlur={handleCommitTitle}
+            onKeyDown={handleTitleKeyDown}
             placeholder="NOME DA NOTA..."
             title="Renomear nota"
           />

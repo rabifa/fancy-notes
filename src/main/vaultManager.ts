@@ -245,7 +245,7 @@ export async function renameNote(
 
   const ext = path.extname(notePath)
   const dir = path.dirname(notePath)
-  const cleanTitle = newTitle.trim() || 'Untitled'
+  const cleanTitle = newTitle.replace(/[\\/:*?"<>|]/g, '').trim() || 'Untitled'
   let newFileName = `${cleanTitle}${ext}`
   let newPath = path.join(dir, newFileName)
 

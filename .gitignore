@@ -38,3 +38,8 @@ Thumbs.db
 
 # Local testing vaults and temporary folders
 *vault*/
+
+# 
+branding/
+color references/
+assets/

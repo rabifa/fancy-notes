@@ -196,33 +196,31 @@ export const useNotes = (activeVaultPath: string | null) => {
   )
 
   // Rename a note (and update local states)
-  const renameNote = useCallback(
-    async (notePath: string, newTitle: string) => {
-      try {
-        const result = await window.api.vault.renameNote(notePath, newTitle)
+  const renameNote = useCallback(async (notePath: string, newTitle: string) => {
+    try {
+      const result = await window.api.vault.renameNote(notePath, newTitle)
 
-        setNotes((prevNotes) =>
-          prevNotes.map((note) =>
-            note.path === notePath
-              ? {
-                  ...note,
-                  path: result.path,
-                  title: result.title,
-                  updatedAt: result.updatedAt
-                }
-              : note
-          )
-        )
-
-        if (activeNotePath === notePath) {
-          setActiveNotePath(result.path)
-        }
-      } catch (error) {
-        console.error('Failed to rename note:', error)
+      if (activeNotePathRef.current === notePath) {
+        activeNotePathRef.current = result.path
+        setActiveNotePath(result.path)
       }
-    },
-    [activeNotePath]
-  )
+
+      setNotes((prevNotes) =>
+        prevNotes.map((note) =>
+          note.path === notePath
+            ? {
+                ...note,
+                path: result.path,
+                title: result.title,
+                updatedAt: result.updatedAt
+              }
+            : note
+        )
+      )
+    } catch (error) {
+      console.error('Failed to rename note:', error)
+    }
+  }, [])
 
   // Toggle favorite
   const toggleFavorite = useCallback(async (notePath: string) => {
@@ -305,7 +303,8 @@ export const useNotes = (activeVaultPath: string | null) => {
     selectNote,
     createNote,
     deleteNote,
-    renameNote: (newTitle: string) => activeNotePath && renameNote(activeNotePath, newTitle),
+    renameNote: (newTitle: string) =>
+      activeNotePathRef.current && renameNote(activeNotePathRef.current, newTitle),
     toggleFavorite,
     exportTxt: () => activeNotePath && exportTxt(activeNotePath),
     handleContentChange

@@ -1,22 +1,21 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Editor } from '@tiptap/react'
-import {
-  Columns,
-  Trash2,
-  Copy,
-  Download,
-  Plus,
-  ListTodo,
-  Bold,
-  Italic,
-  Underline,
-  AlignLeft,
-  AlignCenter,
-  AlignRight,
-  AlignJustify,
-  Palette,
-  ChevronDown
-} from 'lucide-react'
+import { Copy, ChevronDown } from 'lucide-react'
+
+import sidebarEnableIcon from '../../assets/icons/sidebar-anable-icon.svg'
+import sidebarDisableIcon from '../../assets/icons/sidebar-disable-icon.svg'
+import trashIcon from '../../assets/icons/trash-icon.svg'
+import newNoteIcon from '../../assets/icons/new-note-icon.svg'
+import checklistIcon from '../../assets/icons/checklist-icon.svg'
+import fontEditIcon from '../../assets/icons/font-edit-icon.svg'
+import highlighterIcon from '../../assets/icons/highlighter-icon.svg'
+import boldIcon from '../../assets/icons/bold-icon.svg'
+import italicIcon from '../../assets/icons/italic-icon.svg'
+import underscoreIcon from '../../assets/icons/underscore-icon.svg'
+import alignLeftIcon from '../../assets/icons/align-left-icon.svg'
+import alignCenterIcon from '../../assets/icons/align-center-icon.svg'
+import alignRightIcon from '../../assets/icons/align-right-icon.svg'
+import SvgIcon from '../common/SvgIcon'
 
 interface EditorToolbarProps {
   editor: Editor | null
@@ -51,7 +50,6 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
   onToggleSidebar,
   onDeleteNote,
   onDuplicateNote,
-  onExportTxt,
   onCreateNote,
   isSidebarOpen = true
 }) => {
@@ -106,28 +104,37 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
         <button
           className={`toolbar-btn ${isSidebarOpen ? 'active' : ''}`}
           onClick={onToggleSidebar}
-          title={isSidebarOpen ? 'Esconder Sidebar' : 'Mostrar Sidebar'}
+          title={isSidebarOpen ? 'Esconder Barra Lateral' : 'Mostrar Barra Lateral'}
         >
-          <Columns size={16} />
+          <SvgIcon
+            src={isSidebarOpen ? sidebarDisableIcon : sidebarEnableIcon}
+            size={15}
+            alt="Sidebar"
+          />
         </button>
         <button className="toolbar-btn text-pink" onClick={onDeleteNote} title="Excluir Nota">
-          <Trash2 size={16} />
+          <SvgIcon src={trashIcon} size={15} alt="Excluir" />
         </button>
         <button className="toolbar-btn" onClick={onDuplicateNote} title="Duplicar Nota">
-          <Copy size={16} />
-        </button>
-        <button className="toolbar-btn" onClick={onExportTxt} title="Exportar para .txt">
-          <Download size={16} />
+          <Copy size={15} />
         </button>
         <button className="toolbar-btn text-cyan" onClick={onCreateNote} title="Nova Nota">
-          <Plus size={16} />
+          <SvgIcon src={newNoteIcon} size={15} alt="Nova Nota" />
         </button>
       </div>
 
       <div className="toolbar-divider" />
 
-      {/* Group 2: Typography dropdown and color picker */}
+      {/* Group 2: Typography, Color & Checklist */}
       <div className="toolbar-group">
+        <button
+          className={`toolbar-btn ${editor.isActive('taskList') ? 'active' : ''}`}
+          onClick={() => editor.chain().focus().toggleTaskList().run()}
+          title="Lista de Tarefas"
+        >
+          <SvgIcon src={checklistIcon} size={15} alt="Checklist" />
+        </button>
+
         {/* Font Family Dropdown */}
         <div className="dropdown-container" ref={fontRef}>
           <button
@@ -135,6 +142,7 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
             onClick={() => setIsFontOpen(!isFontOpen)}
             title="Família de Fonte"
           >
+            <SvgIcon src={fontEditIcon} size={14} alt="Fonte" />
             <span className="dropdown-label">{getActiveFontName()}</span>
             <ChevronDown size={12} />
           </button>
@@ -163,7 +171,12 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
             onClick={() => setIsColorOpen(!isColorOpen)}
             title="Cor da Fonte"
           >
-            <Palette size={16} style={{ color: getActiveColor() }} />
+            <SvgIcon
+              src={highlighterIcon}
+              size={15}
+              alt="Cor"
+              style={{ color: getActiveColor() }}
+            />
             <ChevronDown size={12} />
           </button>
           {isColorOpen && (
@@ -206,21 +219,21 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
           onClick={() => editor.chain().focus().toggleBold().run()}
           title="Negrito"
         >
-          <Bold size={16} />
+          <SvgIcon src={boldIcon} size={15} alt="Negrito" />
         </button>
         <button
           className={`toolbar-btn ${editor.isActive('italic') ? 'active' : ''}`}
           onClick={() => editor.chain().focus().toggleItalic().run()}
           title="Itálico"
         >
-          <Italic size={16} />
+          <SvgIcon src={italicIcon} size={15} alt="Itálico" />
         </button>
         <button
           className={`toolbar-btn ${editor.isActive('underline') ? 'active' : ''}`}
           onClick={() => editor.chain().focus().toggleUnderline().run()}
           title="Sublinhado"
         >
-          <Underline size={16} />
+          <SvgIcon src={underscoreIcon} size={15} alt="Sublinhado" />
         </button>
       </div>
 
@@ -233,41 +246,21 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
           onClick={() => editor.chain().focus().setTextAlign('left').run()}
           title="Alinhar à Esquerda"
         >
-          <AlignLeft size={16} />
+          <SvgIcon src={alignLeftIcon} size={15} alt="Alinhar à Esquerda" />
         </button>
         <button
           className={`toolbar-btn ${editor.isActive({ textAlign: 'center' }) ? 'active' : ''}`}
           onClick={() => editor.chain().focus().setTextAlign('center').run()}
           title="Centralizar"
         >
-          <AlignCenter size={16} />
+          <SvgIcon src={alignCenterIcon} size={15} alt="Centralizar" />
         </button>
         <button
           className={`toolbar-btn ${editor.isActive({ textAlign: 'right' }) ? 'active' : ''}`}
           onClick={() => editor.chain().focus().setTextAlign('right').run()}
           title="Alinhar à Direita"
         >
-          <AlignRight size={16} />
-        </button>
-        <button
-          className={`toolbar-btn ${editor.isActive({ textAlign: 'justify' }) ? 'active' : ''}`}
-          onClick={() => editor.chain().focus().setTextAlign('justify').run()}
-          title="Justificar"
-        >
-          <AlignJustify size={16} />
-        </button>
-      </div>
-
-      <div className="toolbar-divider" />
-
-      {/* Group 5: Lists and Checkboxes */}
-      <div className="toolbar-group">
-        <button
-          className={`toolbar-btn ${editor.isActive('taskList') ? 'active' : ''}`}
-          onClick={() => editor.chain().focus().toggleTaskList().run()}
-          title="Lista de Tarefas"
-        >
-          <ListTodo size={16} />
+          <SvgIcon src={alignRightIcon} size={15} alt="Alinhar à Direita" />
         </button>
       </div>
     </div>

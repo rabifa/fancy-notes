@@ -1,18 +1,16 @@
 | Task | Status | Details |
 | --- | --- | --- |
-| Explore project context | Done | Evaluated Electron + React + TypeScript setup & UI mockups |
-| Ask clarifying questions | Done | Confirmed Vault Notes spec & Paper layout spec |
-| Propose 2-3 approaches | Done | Selected Approach 1 (TipTap + Electron Native IPC) |
-| Present design sections | Done | Design approved and saved to `docs/plans/2026-07-28-vault-notes-design.md` |
-| Write design doc | Done | Saved design spec & committed to git |
-| Transition to implementation | Done | Saved implementation plan to `docs/plans/2026-07-28-vault-notes-implementation-plan.md` |
-| Task 1: Install Required Dependencies | Done | Installed `@tiptap/*`, `lucide-react`, `chokidar`, `electron-store` |
-| Task 2: Main Process IPC Handlers & Vault Management | Done | Implement `vaultManager.ts` & register `ipcMain` channels |
-| Task 3: Preload API Bridge & Types Definition | Done | Define IPC types and expose `window.api.vault` |
-| Task 4: Cyberpunk Dark Neon CSS Theme & Fonts | Done | Set up theme tokens from Paper & font imports |
-| Task 5: Custom Titlebar Component | Done | Build frameless titlebar with custom window controls |
-| Task 6: Sidebar, Note List & Bottom Left Vault Selector | Done | Build Sidebar, SearchBar, NoteCards & VaultSelector |
-| Task 7: TipTap Editor & Custom Formatting Toolbar | Done | Build TipTap editor with full formatting options |
-| Task 8: Status Bar & Onboarding Modal | Done | Build EditorFooter status bar & OnboardingModal |
-| Task 9: Application State Integration | Done | Connect `useVault`, `useNotes` hooks & assemble `App.tsx` |
-| Task 10: Verification & Build Validation | Done | Perform typecheck and dev build verification |
+| Explore project context | Done | Checked project files, lint status, TypeScript compiler status, and Paper UI design structure |
+| Ask clarifying questions | Done | Aligned on keeping Duplicate Note, copying custom SVGs, and removing save status |
+| Propose 2-3 approaches | Done | Selected raw SVG assets integration and design-match approaches |
+| Present design sections | Done | Aligned on custom SVG mapping for Titlebar, Toolbar, and pink bullet stats for Footer |
+| Write design doc | Done | Saved design spec to docs/plans/2026-08-25-layout-alignment-design.md |
+| Transition to implementation | Done | Created implementation plan in docs/plans/2026-08-25-layout-alignment-implementation-plan.md |
+| Task 1: Update Titlebar Icons and Branding | Done | Replaced Titlebar Lucide controls with custom SVGs, added brand icon and window state handling |
+| Task 2: Refactor Editor Toolbar layout and icons | Done | Replaced formatting controls with custom SVGs, regrouped items, removed export/justify |
+| Task 3: Adjust Editor Footer | Done | Removed save status indicator, styled word/character stats in pink font with bullet separator |
+| Task 4: Aesthetic Verification | Done | Full build (`typecheck` + `electron-vite build`) and lint verification passed cleanly |
+
+
+
+

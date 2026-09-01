@@ -43,7 +43,15 @@ if (process.contextIsolated) {
     contextBridge.exposeInMainWorld('electronAPI', {
       minimize: () => ipcRenderer.send('window:minimize'),
       maximize: () => ipcRenderer.send('window:maximize'),
-      close: () => ipcRenderer.send('window:close')
+      close: () => ipcRenderer.send('window:close'),
+      isMaximized: () => ipcRenderer.invoke('window:is-maximized'),
+      onStateChanged: (callback: (isMaximized: boolean) => void) => {
+        const listener = (_event: unknown, isMaximized: boolean) => callback(isMaximized)
+        ipcRenderer.on('window:state-changed', listener)
+        return () => {
+          ipcRenderer.removeListener('window:state-changed', listener)
+        }
+      }
     })
   } catch (error) {
     console.error(error)

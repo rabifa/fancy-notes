@@ -71,6 +71,10 @@ function registerIpcHandlers(): void {
   ipcMain.handle('vault:watch-changes', async (event, vaultPath: string) => {
     return watchVault(vaultPath, event.sender)
   })
+
+  ipcMain.handle('window:is-maximized', () => {
+    return mainWindow?.isMaximized() || false
+  })
 }
 
 function createWindow(): void {
@@ -81,7 +85,7 @@ function createWindow(): void {
     show: false,
     autoHideMenuBar: true,
     titleBarStyle: 'hidden',
-    ...(process.platform === 'linux' ? { icon } : {}),
+    ...(process.platform !== 'darwin' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false,
@@ -91,6 +95,14 @@ function createWindow(): void {
 
   mainWindow.on('ready-to-show', () => {
     mainWindow?.show()
+  })
+
+  mainWindow.on('maximize', () => {
+    mainWindow?.webContents.send('window:state-changed', true)
+  })
+
+  mainWindow.on('unmaximize', () => {
+    mainWindow?.webContents.send('window:state-changed', false)
   })
 
   mainWindow.webContents.setWindowOpenHandler((details) => {

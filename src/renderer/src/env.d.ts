@@ -7,6 +7,8 @@ declare global {
       minimize: () => void
       maximize: () => void
       close: () => void
+      isMaximized?: () => Promise<boolean>
+      onStateChanged?: (callback: (isMaximized: boolean) => void) => () => void
     }
   }
 }

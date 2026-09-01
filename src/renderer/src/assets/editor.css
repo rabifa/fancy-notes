@@ -539,9 +539,6 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 16px;
-  font-family: var(--font-family-mono);
-  font-size: 10px;
-  color: var(--text-muted);
   box-sizing: border-box;
   user-select: none;
 }
@@ -549,97 +546,33 @@
 .editor-stats {
   display: flex;
   align-items: center;
-  gap: 12px;
 }
 
-.stat-item {
+.editor-stats .stat-text {
+  font-family: var(--font-family-body);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 16px;
+  color: var(--pink-neon);
   letter-spacing: 0.5px;
-}
-
-.stat-value {
-  color: #ffffff;
-  font-weight: 600;
-}
-
-.stat-separator {
-  color: var(--separator);
-  font-size: 10px;
 }
 
 .editor-status-bar-right {
   display: flex;
   align-items: center;
-  gap: 12px;
 }
 
 .note-format-badge {
   background-color: rgba(0, 229, 255, 0.08);
   border: 1px solid rgba(0, 229, 255, 0.15);
   color: var(--cyan-neon);
-  padding: 1px 5px;
+  padding: 2px 6px;
   border-radius: 3px;
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.5px;
 }
 
-.editor-save-status {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.status-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  display: inline-block;
-  transition: all 0.3s ease;
-}
-
-.status-saved .status-dot {
-  background-color: var(--cyan-neon);
-  box-shadow: 0 0 6px var(--cyan-neon);
-}
-
-.status-saved .status-label {
-  color: var(--cyan-neon);
-  font-weight: 600;
-}
-
-.status-saving .status-dot {
-  background-color: #ffcc00;
-  box-shadow: 0 0 6px #ffcc00;
-  animation: footer-dot-blink 1s infinite ease-in-out;
-}
-
-.status-saving .status-label {
-  color: #ffcc00;
-  font-weight: 600;
-}
-
-.status-dirty .status-dot {
-  background-color: var(--pink-neon);
-  box-shadow: 0 0 6px var(--pink-neon);
-}
-
-.status-dirty .status-label {
-  color: var(--pink-neon);
-  font-weight: 600;
-}
-
-.status-idle .status-dot {
-  background-color: var(--text-muted);
-}
-
-.status-idle .status-label {
-  color: var(--text-muted);
-}
-
-@keyframes footer-dot-blink {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.3; transform: scale(0.8); }
-}
 
 /* Onboarding Modal Overlay & Styles */
 .modal-overlay {
