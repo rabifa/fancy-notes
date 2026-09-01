@@ -107,7 +107,7 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
           title={isSidebarOpen ? 'Esconder Barra Lateral' : 'Mostrar Barra Lateral'}
         >
           <SvgIcon
-            src={isSidebarOpen ? sidebarDisableIcon : sidebarEnableIcon}
+            src={isSidebarOpen ? sidebarEnableIcon : sidebarDisableIcon}
             size={15}
             alt="Sidebar"
           />
