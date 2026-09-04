@@ -169,6 +169,20 @@
   white-space: nowrap;
 }
 
+.note-card-title-input {
+  flex: 1;
+  min-width: 0;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--cyan-neon);
+  outline: none;
+  padding: 0;
+}
+
 .note-card-ext {
   font-family: var(--font-family-header);
   font-size: 9px;

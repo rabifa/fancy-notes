@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Editor } from '@tiptap/react'
-import { Copy, ChevronDown } from 'lucide-react'
+import { Copy } from 'lucide-react'
 
 import sidebarEnableIcon from '../../assets/icons/sidebar-anable-icon.svg'
 import sidebarDisableIcon from '../../assets/icons/sidebar-disable-icon.svg'
@@ -73,15 +73,6 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
 
   if (!editor) return null
 
-  const getActiveFontName = () => {
-    for (const font of FONTS) {
-      if (editor.isActive('textStyle', { fontFamily: font.value })) {
-        return font.name
-      }
-    }
-    return 'Fonte'
-  }
-
   const getActiveColor = () => {
     const attrs = editor.getAttributes('textStyle')
     return attrs.color || '#ffffff'
@@ -103,6 +94,7 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
       <div className="toolbar-group">
         <button
           className={`toolbar-btn ${isSidebarOpen ? 'active' : ''}`}
+          onMouseDown={(e) => e.preventDefault()}
           onClick={onToggleSidebar}
           title={isSidebarOpen ? 'Esconder Barra Lateral' : 'Mostrar Barra Lateral'}
         >
@@ -112,13 +104,28 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
             alt="Sidebar"
           />
         </button>
-        <button className="toolbar-btn text-pink" onClick={onDeleteNote} title="Excluir Nota">
+        <button
+          className="toolbar-btn text-pink"
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={onDeleteNote}
+          title="Excluir Nota"
+        >
           <SvgIcon src={trashIcon} size={15} alt="Excluir" />
         </button>
-        <button className="toolbar-btn" onClick={onDuplicateNote} title="Duplicar Nota">
+        <button
+          className="toolbar-btn"
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={onDuplicateNote}
+          title="Duplicar Nota"
+        >
           <Copy size={15} />
         </button>
-        <button className="toolbar-btn text-cyan" onClick={onCreateNote} title="Nova Nota">
+        <button
+          className="toolbar-btn text-cyan"
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={onCreateNote}
+          title="Nova Nota"
+        >
           <SvgIcon src={newNoteIcon} size={15} alt="Nova Nota" />
         </button>
       </div>
@@ -129,6 +136,7 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
       <div className="toolbar-group">
         <button
           className={`toolbar-btn ${editor.isActive('taskList') ? 'active' : ''}`}
+          onMouseDown={(e) => e.preventDefault()}
           onClick={() => editor.chain().focus().toggleTaskList().run()}
           title="Lista de Tarefas"
         >
@@ -138,13 +146,12 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
         {/* Font Family Dropdown */}
         <div className="dropdown-container" ref={fontRef}>
           <button
-            className="dropdown-trigger"
+            className={`toolbar-btn ${isFontOpen ? 'active' : ''}`}
+            onMouseDown={(e) => e.preventDefault()}
             onClick={() => setIsFontOpen(!isFontOpen)}
             title="Família de Fonte"
           >
-            <SvgIcon src={fontEditIcon} size={14} alt="Fonte" />
-            <span className="dropdown-label">{getActiveFontName()}</span>
-            <ChevronDown size={12} />
+            <SvgIcon src={fontEditIcon} size={15} alt="Fonte" />
           </button>
           {isFontOpen && (
             <div className="dropdown-menu font-dropdown">
@@ -155,6 +162,7 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
                     editor.isActive('textStyle', { fontFamily: font.value }) ? 'active' : ''
                   }`}
                   style={{ fontFamily: font.value }}
+                  onMouseDown={(e) => e.preventDefault()}
                   onClick={() => setFont(font.value)}
                 >
                   {font.name}
@@ -167,7 +175,8 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
         {/* Color Dropdown */}
         <div className="dropdown-container" ref={colorRef}>
           <button
-            className="dropdown-trigger color-trigger"
+            className={`toolbar-btn ${isColorOpen ? 'active' : ''}`}
+            onMouseDown={(e) => e.preventDefault()}
             onClick={() => setIsColorOpen(!isColorOpen)}
             title="Cor da Fonte"
           >
@@ -177,7 +186,6 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
               alt="Cor"
               style={{ color: getActiveColor() }}
             />
-            <ChevronDown size={12} />
           </button>
           {isColorOpen && (
             <div className="dropdown-menu color-dropdown">
@@ -189,6 +197,7 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
                       key={color.name}
                       className={`color-swatch ${isActive ? 'active' : ''}`}
                       style={{ backgroundColor: color.value }}
+                      onMouseDown={(e) => e.preventDefault()}
                       onClick={() => setColor(color.value)}
                       title={color.name}
                     />
@@ -216,6 +225,7 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
       <div className="toolbar-group">
         <button
           className={`toolbar-btn ${editor.isActive('bold') ? 'active' : ''}`}
+          onMouseDown={(e) => e.preventDefault()}
           onClick={() => editor.chain().focus().toggleBold().run()}
           title="Negrito"
         >
@@ -223,6 +233,7 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
         </button>
         <button
           className={`toolbar-btn ${editor.isActive('italic') ? 'active' : ''}`}
+          onMouseDown={(e) => e.preventDefault()}
           onClick={() => editor.chain().focus().toggleItalic().run()}
           title="Itálico"
         >
@@ -230,6 +241,7 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
         </button>
         <button
           className={`toolbar-btn ${editor.isActive('underline') ? 'active' : ''}`}
+          onMouseDown={(e) => e.preventDefault()}
           onClick={() => editor.chain().focus().toggleUnderline().run()}
           title="Sublinhado"
         >
@@ -243,6 +255,7 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
       <div className="toolbar-group">
         <button
           className={`toolbar-btn ${editor.isActive({ textAlign: 'left' }) ? 'active' : ''}`}
+          onMouseDown={(e) => e.preventDefault()}
           onClick={() => editor.chain().focus().setTextAlign('left').run()}
           title="Alinhar à Esquerda"
         >
@@ -250,6 +263,7 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
         </button>
         <button
           className={`toolbar-btn ${editor.isActive({ textAlign: 'center' }) ? 'active' : ''}`}
+          onMouseDown={(e) => e.preventDefault()}
           onClick={() => editor.chain().focus().setTextAlign('center').run()}
           title="Centralizar"
         >
@@ -257,6 +271,7 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
         </button>
         <button
           className={`toolbar-btn ${editor.isActive({ textAlign: 'right' }) ? 'active' : ''}`}
+          onMouseDown={(e) => e.preventDefault()}
           onClick={() => editor.chain().focus().setTextAlign('right').run()}
           title="Alinhar à Direita"
         >

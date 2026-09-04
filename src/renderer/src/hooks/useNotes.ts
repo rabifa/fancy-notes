@@ -303,8 +303,7 @@ export const useNotes = (activeVaultPath: string | null) => {
     selectNote,
     createNote,
     deleteNote,
-    renameNote: (newTitle: string) =>
-      activeNotePathRef.current && renameNote(activeNotePathRef.current, newTitle),
+    renameNote,
     toggleFavorite,
     exportTxt: () => activeNotePath && exportTxt(activeNotePath),
     handleContentChange

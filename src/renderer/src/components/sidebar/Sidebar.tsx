@@ -17,6 +17,7 @@ interface SidebarProps {
   onAddVault: () => void
   onCreateNote: () => void
   onToggleSidebar?: () => void
+  onRenameNote: (notePath: string, newTitle: string) => void
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -30,7 +31,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onSelectVault,
   onAddVault,
   onCreateNote,
-  onToggleSidebar
+  onToggleSidebar,
+  onRenameNote
 }) => {
   return (
     <div className="sidebar">
@@ -70,6 +72,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               isActive={note.path === activeNotePath}
               onClick={() => onSelectNote(note.path)}
               onToggleFavorite={() => onToggleFavorite(note.path)}
+              onRename={(newTitle) => onRenameNote(note.path, newTitle)}
             />
           ))
         )}

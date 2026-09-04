@@ -6,11 +6,7 @@ import reduceIcon from '../../assets/icons/reduce-icon.svg'
 import closeIcon from '../../assets/icons/close-icon.svg'
 import SvgIcon from '../common/SvgIcon'
 
-interface TitlebarProps {
-  activeNoteTitle?: string
-}
-
-export const Titlebar: React.FC<TitlebarProps> = ({ activeNoteTitle }) => {
+export const Titlebar: React.FC = () => {
   const [isMaximized, setIsMaximized] = useState(false)
 
   useEffect(() => {
@@ -50,10 +46,6 @@ export const Titlebar: React.FC<TitlebarProps> = ({ activeNoteTitle }) => {
           <span className="logo-vault">VAULT</span>
           <span className="logo-notes">NOTES</span>
         </div>
-      </div>
-
-      <div className="titlebar-title">
-        {activeNoteTitle ? activeNoteTitle.toUpperCase() : 'CYBERPUNK NOTE SYSTEM'}
       </div>
 
       <div className="titlebar-controls no-drag">

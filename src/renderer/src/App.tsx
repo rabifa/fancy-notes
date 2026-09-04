@@ -88,13 +88,13 @@ export const App = () => {
             onAddVault={selectVaultFolder}
             onCreateNote={handleCreateNote}
             onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+            onRenameNote={renameNote}
           />
         )}
 
         <div className="editor-panel-wrapper">
           <TipTapEditor
             notePath={activeNotePath}
-            noteTitle={activeNote ? activeNote.title : null}
             noteContent={activeNoteContent}
             noteExtension={activeNote ? activeNote.extension : '.md'}
             isSidebarOpen={isSidebarOpen}
@@ -103,7 +103,6 @@ export const App = () => {
             onDuplicateNote={handleDuplicateNote}
             onExportTxt={handleExportTxt}
             onCreateNote={handleCreateNote}
-            onRenameNote={renameNote}
             onContentChange={handleContentChange}
             onStatsChange={handleStatsChange}
           />

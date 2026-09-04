@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Star, FileText } from 'lucide-react'
 import { NoteMetadata } from '../../types/vault'
 
@@ -7,14 +7,60 @@ interface NoteCardProps {
   isActive: boolean
   onClick: () => void
   onToggleFavorite: (e: React.MouseEvent) => void
+  onRename: (newTitle: string) => void
 }
 
 export const NoteCard: React.FC<NoteCardProps> = ({
   note,
   isActive,
   onClick,
-  onToggleFavorite
+  onToggleFavorite,
+  onRename
 }) => {
+  const [isEditing, setIsEditing] = useState(false)
+  const [draftTitle, setDraftTitle] = useState(note.title)
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    if (!isEditing) {
+      setDraftTitle(note.title)
+    }
+  }, [note.title, isEditing])
+
+  useEffect(() => {
+    if (isEditing) {
+      inputRef.current?.focus()
+      inputRef.current?.select()
+    }
+  }, [isEditing])
+
+  const startEditing = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    setDraftTitle(note.title)
+    setIsEditing(true)
+  }
+
+  const commitEdit = () => {
+    setIsEditing(false)
+    const trimmed = draftTitle.trim()
+    if (trimmed && trimmed !== note.title) {
+      onRename(trimmed)
+    } else {
+      setDraftTitle(note.title)
+    }
+  }
+
+  const handleTitleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      commitEdit()
+    } else if (e.key === 'Escape') {
+      e.preventDefault()
+      setDraftTitle(note.title)
+      setIsEditing(false)
+    }
+  }
+
   const formatTime = (timestamp: number) => {
     const date = new Date(timestamp)
     return date.toLocaleDateString('pt-BR', {
@@ -31,7 +77,22 @@ export const NoteCard: React.FC<NoteCardProps> = ({
       <div className="note-card-header">
         <div className="note-card-title-group">
           <FileText className="note-type-icon" size={14} />
-          <span className="note-card-title">{note.title}</span>
+          {isEditing ? (
+            <input
+              ref={inputRef}
+              type="text"
+              className="note-card-title-input"
+              value={draftTitle}
+              onChange={(e) => setDraftTitle(e.target.value)}
+              onBlur={commitEdit}
+              onKeyDown={handleTitleKeyDown}
+              onClick={(e) => e.stopPropagation()}
+            />
+          ) : (
+            <span className="note-card-title" onDoubleClick={startEditing} title="Duplo clique para renomear">
+              {note.title}
+            </span>
+          )}
         </div>
         <span className="note-card-ext">{note.extension.toUpperCase()}</span>
       </div>

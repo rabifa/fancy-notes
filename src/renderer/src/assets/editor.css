@@ -307,44 +307,9 @@
   flex-direction: column;
 }
 
-.editor-title-container {
-  padding: 24px 40px 12px 40px;
-  position: relative;
-}
-
-.editor-title-input {
-  width: 100%;
-  background: transparent;
-  border: none;
-  font-size: 26px;
-  font-family: var(--font-family-header);
-  color: #ffffff;
-  font-weight: 700;
-  outline: none;
-  letter-spacing: 1.5px;
-  transition: all 0.2s ease;
-}
-
-.editor-title-input:focus {
-  color: var(--cyan-neon);
-  text-shadow: 0 0 8px rgba(0, 229, 255, 0.3);
-}
-
-.editor-title-neon-bar {
-  height: 1px;
-  background: linear-gradient(90deg, var(--border-color) 0%, rgba(20, 28, 59, 0) 100%);
-  margin-top: 8px;
-  transition: all 0.3s ease;
-}
-
-.editor-title-container:focus-within .editor-title-neon-bar {
-  background: linear-gradient(90deg, var(--cyan-neon) 0%, rgba(0, 229, 255, 0) 100%);
-  filter: drop-shadow(0 0 4px var(--cyan-neon));
-}
-
 .editor-body {
   flex: 1;
-  padding: 12px 40px 40px 40px;
+  padding: 24px 40px 40px 40px;
 }
 
 /* TipTap / ProseMirror Content Styling */
