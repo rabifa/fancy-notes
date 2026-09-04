@@ -33,7 +33,21 @@ export const useNotes = (activeVaultPath: string | null) => {
     }
     setIsLoadingNotes(true)
     try {
-      const list = await window.api.vault.listNotes(activeVaultPath)
+      let list = await window.api.vault.listNotes(activeVaultPath)
+
+      // Auto-create a first note so the user is never stuck on an empty
+      // vault with no way to open the editor and start writing.
+      if (list.length === 0 && !isCreatingInitialNoteRef.current) {
+        isCreatingInitialNoteRef.current = true
+        try {
+          const newNote = await window.api.vault.createNote(activeVaultPath, 'Sem Titulo', 'md')
+          list = await window.api.vault.listNotes(activeVaultPath)
+          setActiveNotePath(newNote.path)
+        } finally {
+          isCreatingInitialNoteRef.current = false
+        }
+      }
+
       setNotes(list)
     } catch (error) {
       console.error('Failed to list notes:', error)
@@ -173,18 +187,6 @@ export const useNotes = (activeVaultPath: string | null) => {
     },
     [activeVaultPath, fetchNotes, selectNote]
   )
-
-  // Auto-create a first note so the user is never stuck on an empty vault
-  // with no way to open the editor and start writing.
-  useEffect(() => {
-    if (!activeVaultPath || isLoadingNotes || notes.length > 0) return
-    if (isCreatingInitialNoteRef.current) return
-
-    isCreatingInitialNoteRef.current = true
-    createNote().finally(() => {
-      isCreatingInitialNoteRef.current = false
-    })
-  }, [activeVaultPath, isLoadingNotes, notes.length, createNote])
 
   // Delete note
   const deleteNote = useCallback(
