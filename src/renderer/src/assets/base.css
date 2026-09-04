@@ -27,6 +27,11 @@
   font-weight: normal;
 }
 
+strong,
+b {
+  font-weight: 700;
+}
+
 ul {
   list-style: none;
 }
