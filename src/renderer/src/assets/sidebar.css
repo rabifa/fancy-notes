@@ -13,12 +13,23 @@
   width: 5px;
   height: calc(100vh - 36px);
   cursor: col-resize;
+  position: relative;
+}
+
+.sidebar-resize-handle::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  transform: translateX(-50%);
   background-color: var(--border-color);
   transition: background-color 0.15s ease;
 }
 
-.sidebar-resize-handle:hover,
-.sidebar-resize-handle:active {
+.sidebar-resize-handle:hover::before,
+.sidebar-resize-handle:active::before {
   background-color: var(--cyan-neon);
 }
 

@@ -6,7 +6,7 @@ import VaultSelector from './VaultSelector'
 import { NoteMetadata, VaultState } from '../../types/vault'
 
 const MIN_SIDEBAR_WIDTH = 170
-const MAX_SIDEBAR_WIDTH = 480
+const MAX_SIDEBAR_WIDTH = 400
 const DEFAULT_SIDEBAR_WIDTH = 320
 const SIDEBAR_WIDTH_STORAGE_KEY = 'sidebarWidth'
 

@@ -73,9 +73,21 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
 
   if (!editor) return null
 
+  // Pasted content often carries colors as rgb()/rgba() strings, which the
+  // native <input type="color"> silently rejects (it only accepts #rrggbb).
+  const toHexColor = (color: string): string => {
+    if (/^#[0-9a-f]{6}$/i.test(color)) return color
+    const match = color.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i)
+    if (match) {
+      const [, r, g, b] = match
+      return `#${[r, g, b].map((c) => Number(c).toString(16).padStart(2, '0')).join('')}`
+    }
+    return '#ffffff'
+  }
+
   const getActiveColor = () => {
     const attrs = editor.getAttributes('textStyle')
-    return attrs.color || '#ffffff'
+    return toHexColor(attrs.color || '#ffffff')
   }
 
   const setFont = (fontValue: string) => {
