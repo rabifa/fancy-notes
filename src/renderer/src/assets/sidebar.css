@@ -1,11 +1,25 @@
 .sidebar {
-  width: 320px;
+  flex: 0 0 auto;
   height: calc(100vh - 36px); /* subtract Titlebar height */
   background-color: var(--bg-panel);
-  border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  overflow: hidden;
+}
+
+.sidebar-resize-handle {
+  flex: 0 0 auto;
+  width: 5px;
+  height: calc(100vh - 36px);
+  cursor: col-resize;
+  background-color: var(--border-color);
+  transition: background-color 0.15s ease;
+}
+
+.sidebar-resize-handle:hover,
+.sidebar-resize-handle:active {
+  background-color: var(--cyan-neon);
 }
 
 .sidebar-header {
