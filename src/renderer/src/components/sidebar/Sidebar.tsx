@@ -1,5 +1,5 @@
 import React from 'react'
-import { Plus, ListCollapse } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import SearchBar from './SearchBar'
 import NoteCard from './NoteCard'
 import VaultSelector from './VaultSelector'
@@ -16,8 +16,8 @@ interface SidebarProps {
   onSelectVault: (path: string) => void
   onAddVault: () => void
   onCreateNote: () => void
-  onToggleSidebar?: () => void
   onRenameNote: (notePath: string, newTitle: string) => void
+  onDeleteNote: (notePath: string) => void
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -31,8 +31,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onSelectVault,
   onAddVault,
   onCreateNote,
-  onToggleSidebar,
-  onRenameNote
+  onRenameNote,
+  onDeleteNote
 }) => {
   return (
     <div className="sidebar">
@@ -43,15 +43,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <button className="sidebar-action-btn" onClick={onCreateNote} title="Nova Nota">
               <Plus size={16} />
             </button>
-            {onToggleSidebar && (
-              <button
-                className="sidebar-action-btn toggle-btn"
-                onClick={onToggleSidebar}
-                title="Recolher Sidebar"
-              >
-                <ListCollapse size={16} />
-              </button>
-            )}
           </div>
         </div>
         <SearchBar value={searchQuery} onChange={onSearchChange} />
@@ -73,6 +64,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               onClick={() => onSelectNote(note.path)}
               onToggleFavorite={() => onToggleFavorite(note.path)}
               onRename={(newTitle) => onRenameNote(note.path, newTitle)}
+              onDelete={() => onDeleteNote(note.path)}
             />
           ))
         )}

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Star, FileText } from 'lucide-react'
+import { Star, FileText, Trash2 } from 'lucide-react'
 import { NoteMetadata } from '../../types/vault'
 
 interface NoteCardProps {
@@ -8,6 +8,7 @@ interface NoteCardProps {
   onClick: () => void
   onToggleFavorite: (e: React.MouseEvent) => void
   onRename: (newTitle: string) => void
+  onDelete: () => void
 }
 
 export const NoteCard: React.FC<NoteCardProps> = ({
@@ -15,7 +16,8 @@ export const NoteCard: React.FC<NoteCardProps> = ({
   isActive,
   onClick,
   onToggleFavorite,
-  onRename
+  onRename,
+  onDelete
 }) => {
   const [isEditing, setIsEditing] = useState(false)
   const [draftTitle, setDraftTitle] = useState(note.title)
@@ -101,16 +103,28 @@ export const NoteCard: React.FC<NoteCardProps> = ({
 
       <div className="note-card-footer">
         <span className="note-card-date">{formatTime(note.updatedAt)}</span>
-        <button
-          className={`favorite-btn ${note.isFavorite ? 'is-favorite' : ''}`}
-          onClick={(e) => {
-            e.stopPropagation()
-            onToggleFavorite(e)
-          }}
-          title={note.isFavorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
-        >
-          <Star size={14} fill={note.isFavorite ? 'var(--pink-neon)' : 'transparent'} />
-        </button>
+        <div className="note-card-actions">
+          <button
+            className={`favorite-btn ${note.isFavorite ? 'is-favorite' : ''}`}
+            onClick={(e) => {
+              e.stopPropagation()
+              onToggleFavorite(e)
+            }}
+            title={note.isFavorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}
+          >
+            <Star size={14} fill={note.isFavorite ? 'var(--pink-neon)' : 'transparent'} />
+          </button>
+          <button
+            className="note-card-delete-btn"
+            onClick={(e) => {
+              e.stopPropagation()
+              onDelete()
+            }}
+            title="Excluir Nota"
+          >
+            <Trash2 size={14} />
+          </button>
+        </div>
       </div>
     </div>
   )

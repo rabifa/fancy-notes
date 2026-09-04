@@ -32,12 +32,16 @@ export const App = () => {
     await createNote('Sem Titulo', 'md')
   }
 
+  const handleDeleteNoteByPath = async (notePath: string) => {
+    const confirmDelete = window.confirm('Tem certeza que deseja mover esta nota para a lixeira?')
+    if (confirmDelete) {
+      await deleteNote(notePath)
+    }
+  }
+
   const handleDeleteNote = async () => {
     if (activeNotePath) {
-      const confirmDelete = window.confirm('Tem certeza que deseja mover esta nota para a lixeira?')
-      if (confirmDelete) {
-        await deleteNote(activeNotePath)
-      }
+      await handleDeleteNoteByPath(activeNotePath)
     }
   }
 
@@ -87,8 +91,8 @@ export const App = () => {
             onSelectVault={selectActiveVault}
             onAddVault={selectVaultFolder}
             onCreateNote={handleCreateNote}
-            onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
             onRenameNote={renameNote}
+            onDeleteNote={handleDeleteNoteByPath}
           />
         )}
 

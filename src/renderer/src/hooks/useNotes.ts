@@ -274,14 +274,17 @@ export const useNotes = (activeVaultPath: string | null) => {
     }
   }, [saveStatus])
 
-  // Fast, reactive notes filtering via query
+  // Fast, reactive notes filtering + favorites-first ordering (stable within each group)
   const filteredNotes = useMemo(() => {
-    if (!searchQuery.trim()) return notes
-    const query = searchQuery.toLowerCase()
-    return notes.filter(
-      (note) =>
-        note.title.toLowerCase().includes(query) || note.preview.toLowerCase().includes(query)
-    )
+    const query = searchQuery.trim().toLowerCase()
+    const matched = query
+      ? notes.filter(
+          (note) =>
+            note.title.toLowerCase().includes(query) || note.preview.toLowerCase().includes(query)
+        )
+      : notes
+
+    return [...matched].sort((a, b) => Number(b.isFavorite) - Number(a.isFavorite))
   }, [notes, searchQuery])
 
   // Get active note metadata
