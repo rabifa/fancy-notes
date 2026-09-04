@@ -14,6 +14,7 @@ export const useNotes = (activeVaultPath: string | null) => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
   const activeNotePathRef = useRef<string | null>(null)
   const activeNoteContentRef = useRef<string>('')
+  const isCreatingInitialNoteRef = useRef(false)
 
   // Sync refs to avoid stale closures in debounced functions
   useEffect(() => {
@@ -172,6 +173,18 @@ export const useNotes = (activeVaultPath: string | null) => {
     },
     [activeVaultPath, fetchNotes, selectNote]
   )
+
+  // Auto-create a first note so the user is never stuck on an empty vault
+  // with no way to open the editor and start writing.
+  useEffect(() => {
+    if (!activeVaultPath || isLoadingNotes || notes.length > 0) return
+    if (isCreatingInitialNoteRef.current) return
+
+    isCreatingInitialNoteRef.current = true
+    createNote().finally(() => {
+      isCreatingInitialNoteRef.current = false
+    })
+  }, [activeVaultPath, isLoadingNotes, notes.length, createNote])
 
   // Delete note
   const deleteNote = useCallback(
