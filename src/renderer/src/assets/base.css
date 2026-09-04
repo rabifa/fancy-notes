@@ -1,3 +1,17 @@
+@font-face {
+  font-family: 'Warriot Tech';
+  src: url('./fonts/WarriotTech-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Warriot Tech';
+  src: url('./fonts/WarriotTech-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+
 :root {
   --bg-app: #060714;
   --bg-panel: #070919;
