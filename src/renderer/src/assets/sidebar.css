@@ -93,6 +93,10 @@
   box-shadow: 0 0 8px rgba(0, 229, 255, 0.3);
 }
 
+.searchbar-input::placeholder {
+  font-family: var(--font-family-header);
+}
+
 /* NoteCard Styles */
 .sidebar-note-list {
   flex: 1;
@@ -149,6 +153,7 @@
   align-items: center;
   gap: 6px;
   overflow: hidden;
+  font-family: var(--font-family-header);
 }
 
 .note-type-icon {
@@ -202,7 +207,7 @@
 }
 
 .note-card-preview {
-  color: var(--text-muted);
+  color: var(--cyan-neon);
   font-size: 11px;
   line-height: 1.4;
   overflow: hidden;
@@ -222,7 +227,7 @@
 .note-card-date {
   color: var(--text-muted);
   font-size: 10px;
-  font-family: var(--font-family-mono);
+  font-family: var(--font-family-header);
 }
 
 .favorite-btn {
@@ -453,4 +458,13 @@
 
 .scrollbar-custom::-webkit-scrollbar-thumb:hover {
   background: var(--separator);
+}
+
+.sidebar-note-list.scrollbar-custom::-webkit-scrollbar-thumb {
+  background: var(--cyan-neon);
+}
+
+.sidebar-note-list.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+  background: var(--cyan-neon);
+  filter: brightness(1.2);
 }
