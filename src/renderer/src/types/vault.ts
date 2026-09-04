@@ -30,5 +30,6 @@ export interface VaultAPI {
   exportTxt: (notePath: string, content: string) => Promise<string | null>
   toggleFavorite: (notePath: string) => Promise<boolean>
   watchChanges: (vaultPath: string) => Promise<void>
+  openFolder: (vaultPath: string) => Promise<string>
   onFileChanged: (callback: (event: string, path: string) => void) => () => void
 }

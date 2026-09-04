@@ -72,6 +72,10 @@ function registerIpcHandlers(): void {
     return watchVault(vaultPath, event.sender)
   })
 
+  ipcMain.handle('vault:open-folder', async (_, vaultPath: string) => {
+    return shell.openPath(vaultPath)
+  })
+
   ipcMain.handle('window:is-maximized', () => {
     return mainWindow?.isMaximized() || false
   })
