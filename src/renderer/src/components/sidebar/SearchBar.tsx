@@ -9,14 +9,14 @@ interface SearchBarProps {
 export const SearchBar: React.FC<SearchBarProps> = ({ value, onChange }) => {
   return (
     <div className="searchbar-container">
-      <Search className="searchbar-icon" size={16} />
       <input
         type="text"
-        placeholder="BUSCAR NOTAS..."
+        placeholder="Buscar notas..."
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="searchbar-input"
       />
+      <Search className="searchbar-icon" size={18} />
     </div>
   )
 }

@@ -117,7 +117,7 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
           />
         </button>
         <button
-          className="toolbar-btn text-pink"
+          className="toolbar-btn"
           onMouseDown={(e) => e.preventDefault()}
           onClick={onDeleteNote}
           title="Excluir Nota"
@@ -133,7 +133,7 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
           <Copy size={15} />
         </button>
         <button
-          className="toolbar-btn text-cyan"
+          className="toolbar-btn"
           onMouseDown={(e) => e.preventDefault()}
           onClick={onCreateNote}
           title="Nova Nota"
