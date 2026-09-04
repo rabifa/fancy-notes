@@ -232,7 +232,7 @@
 }
 
 .note-card-preview {
-  color: var(--cyan-neon);
+  color: rgba(0, 229, 255, 0.65);
   font-size: 11px;
   line-height: 1.4;
   overflow: hidden;
@@ -486,10 +486,9 @@
 }
 
 .sidebar-note-list.scrollbar-custom::-webkit-scrollbar-thumb {
-  background: var(--cyan-neon);
+  background: rgba(0, 229, 255, 0.5);
 }
 
 .sidebar-note-list.scrollbar-custom::-webkit-scrollbar-thumb:hover {
-  background: var(--cyan-neon);
-  filter: brightness(1.2);
+  background: rgba(0, 229, 255, 0.75);
 }
