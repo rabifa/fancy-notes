@@ -29,7 +29,7 @@
 .editor-panel {
   flex: 1;
   min-width: 0;
-  height: calc(100vh - 36px); /* Subtract Titlebar */
+  min-height: 0;
   background-color: var(--bg-app);
   display: flex;
   flex-direction: column;
@@ -321,6 +321,14 @@
 .editor-body {
   flex: 1;
   padding: 24px 40px 40px 40px;
+}
+
+.editor-workspace.scrollbar-custom::-webkit-scrollbar-thumb {
+  background: rgba(0, 229, 255, 0.65);
+}
+
+.editor-workspace.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 229, 255, 0.85);
 }
 
 /* TipTap / ProseMirror Content Styling */

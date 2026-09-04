@@ -75,12 +75,18 @@ export const TipTapEditor: React.FC<TipTapEditorProps> = ({
 
       // Convert back to save format
       const convertedContent = noteExtension === '.txt' ? text : htmlToMarkdown(html)
+      lastEmittedContentRef.current = convertedContent
 
       onContentChange(convertedContent)
     }
   })
 
   const prevNotePathRef = React.useRef<string | null>(null)
+  // Tracks the last content this editor itself produced via typing, so the
+  // sync effect can tell "the user's own edit echoing back through props"
+  // (safe to skip while focused) apart from a note switch or external file
+  // change arriving mid-focus (must always be applied).
+  const lastEmittedContentRef = React.useRef<string | null>(null)
 
   // Synchronize when switching notes or when external updates happen
   useEffect(() => {
@@ -89,9 +95,12 @@ export const TipTapEditor: React.FC<TipTapEditorProps> = ({
     const htmlContent =
       noteExtension === '.txt' ? textToHtml(noteContent) : markdownToHtml(noteContent)
 
+    const isOwnEcho = noteContent === lastEmittedContentRef.current
+
     // Check if the content is actually different to avoid cursor jumps while typing
-    if (editor.getHTML() !== htmlContent && !editor.isFocused) {
+    if (editor.getHTML() !== htmlContent && (!isOwnEcho || !editor.isFocused)) {
       editor.commands.setContent(htmlContent, { emitUpdate: false })
+      lastEmittedContentRef.current = noteContent
 
       // Calculate and trigger stats updates immediately on load
       const text = editor.getText()
