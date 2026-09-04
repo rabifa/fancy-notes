@@ -10,7 +10,7 @@ import TaskList from '@tiptap/extension-task-list'
 import TaskItem from '@tiptap/extension-task-item'
 
 import EditorToolbar from './EditorToolbar'
-import brandIcon from '../../assets/images/vault-notes.png'
+import brandIcon from '../../assets/images/vault-notes@16x.png'
 import { markdownToHtml, htmlToMarkdown, textToHtml } from '../../utils/markdown'
 
 interface TipTapEditorProps {
