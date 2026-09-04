@@ -10,6 +10,7 @@ import TaskList from '@tiptap/extension-task-list'
 import TaskItem from '@tiptap/extension-task-item'
 
 import EditorToolbar from './EditorToolbar'
+import brandIcon from '../../assets/images/vault-notes.png'
 import { markdownToHtml, htmlToMarkdown, textToHtml } from '../../utils/markdown'
 
 interface TipTapEditorProps {
@@ -115,8 +116,11 @@ export const TipTapEditor: React.FC<TipTapEditorProps> = ({
   if (!notePath) {
     return (
       <div className="editor-empty-state">
-        <div className="empty-state-icon">⚡</div>
-        <p className="empty-state-title">VAULT NOTES</p>
+        <img src={brandIcon} alt="Vault Notes" className="empty-state-icon" draggable="false" />
+        <p className="empty-state-title">
+          <span className="logo-vault">VAULT</span>
+          <span className="logo-notes">NOTES</span>
+        </p>
         <p className="empty-state-text">
           Selecione uma nota na sidebar ou crie uma nova para começar a editar.
         </p>
