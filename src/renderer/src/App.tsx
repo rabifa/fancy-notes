@@ -90,7 +90,6 @@ export const App = () => {
             onToggleFavorite={toggleFavorite}
             onSelectVault={selectActiveVault}
             onAddVault={selectVaultFolder}
-            onCreateNote={handleCreateNote}
             onRenameNote={renameNote}
             onDeleteNote={handleDeleteNoteByPath}
           />
@@ -112,12 +111,7 @@ export const App = () => {
           />
 
           {activeNotePath && (
-            <EditorFooter
-              wordCount={wordCount}
-              charCount={charCount}
-              saveStatus={saveStatus}
-              noteExtension={activeNote ? activeNote.extension : null}
-            />
+            <EditorFooter wordCount={wordCount} charCount={charCount} saveStatus={saveStatus} />
           )}
         </div>
       </div>

@@ -41,46 +41,6 @@
   gap: 12px;
 }
 
-.sidebar-title-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.sidebar-title {
-  font-family: var(--font-family-header);
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--text-muted);
-  letter-spacing: 2px;
-}
-
-.sidebar-header-actions {
-  display: flex;
-  gap: 8px;
-}
-
-.sidebar-action-btn {
-  background: var(--bg-control);
-  border: 1px solid var(--border-color);
-  color: var(--cyan-neon);
-  width: 28px;
-  height: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 0 5px rgba(0, 229, 255, 0.1);
-}
-
-.sidebar-action-btn:hover {
-  border-color: var(--pink-neon);
-  color: var(--pink-neon);
-  box-shadow: 0 0 8px rgba(255, 0, 127, 0.3);
-}
-
 /* SearchBar Styles */
 .searchbar-container {
   position: relative;

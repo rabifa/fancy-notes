@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { Plus } from 'lucide-react'
 import SearchBar from './SearchBar'
 import NoteCard from './NoteCard'
 import VaultSelector from './VaultSelector'
@@ -23,7 +22,6 @@ interface SidebarProps {
   onToggleFavorite: (notePath: string) => void
   onSelectVault: (path: string) => void
   onAddVault: () => void
-  onCreateNote: () => void
   onRenameNote: (notePath: string, newTitle: string) => void
   onDeleteNote: (notePath: string) => void
 }
@@ -38,7 +36,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onToggleFavorite,
   onSelectVault,
   onAddVault,
-  onCreateNote,
   onRenameNote,
   onDeleteNote
 }) => {
@@ -87,14 +84,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
     <>
       <div className="sidebar" style={{ width }}>
         <div className="sidebar-header">
-          <div className="sidebar-title-bar">
-            <span className="sidebar-title">NOTAS</span>
-            <div className="sidebar-header-actions">
-              <button className="sidebar-action-btn" onClick={onCreateNote} title="Nova Nota">
-                <Plus size={16} />
-              </button>
-            </div>
-          </div>
           <SearchBar value={searchQuery} onChange={onSearchChange} />
         </div>
 

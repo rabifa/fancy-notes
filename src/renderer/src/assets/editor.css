@@ -128,8 +128,8 @@
 }
 
 .toolbar-btn:hover {
-  background-color: var(--bg-control);
-  color: #ffffff;
+  background-color: rgba(255, 0, 127, 0.1);
+  color: var(--pink-neon);
 }
 
 .toolbar-btn.active {
@@ -535,26 +535,13 @@
 .editor-stats .stat-text {
   font-family: var(--font-family-body);
   font-size: 12px;
-  font-weight: 700;
   line-height: 16px;
   color: var(--pink-neon);
   letter-spacing: 0.5px;
 }
 
-.editor-status-bar-right {
-  display: flex;
-  align-items: center;
-}
-
-.note-format-badge {
-  background-color: rgba(0, 229, 255, 0.08);
-  border: 1px solid rgba(0, 229, 255, 0.15);
+.editor-stats .stat-separator {
   color: var(--cyan-neon);
-  padding: 2px 6px;
-  border-radius: 3px;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
 }
 
 

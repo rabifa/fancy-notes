@@ -6,26 +6,16 @@ interface EditorFooterProps {
   wordCount: number
   charCount: number
   saveStatus?: SaveStatus
-  noteExtension: string | null
 }
 
-export const EditorFooter: React.FC<EditorFooterProps> = ({
-  wordCount,
-  charCount,
-  noteExtension
-}) => {
+export const EditorFooter: React.FC<EditorFooterProps> = ({ wordCount, charCount }) => {
   return (
     <div className="editor-footer">
       <div className="editor-stats">
         <span className="stat-text">
-          PALAVRAS: {wordCount} &bull; CARACTERES: {charCount}
+          PALAVRAS: {wordCount} <span className="stat-separator">&bull;</span> CARACTERES:{' '}
+          {charCount}
         </span>
-      </div>
-
-      <div className="editor-status-bar-right">
-        {noteExtension && (
-          <span className="note-format-badge">{noteExtension.replace('.', '').toUpperCase()}</span>
-        )}
       </div>
     </div>
   )
