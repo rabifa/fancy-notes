@@ -40,8 +40,36 @@
   gap: 12px;
 }
 
+.sidebar-header-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sidebar-close-btn {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  background-color: var(--bg-control);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sidebar-close-btn:hover {
+  border-color: var(--cyan-neon);
+  color: var(--cyan-neon);
+}
+
 /* SearchBar Styles */
 .searchbar-container {
+  flex: 1;
+  min-width: 0;
   position: relative;
   width: 100%;
 }
@@ -210,7 +238,7 @@
 .note-card-date {
   color: var(--text-muted);
   font-size: 10px;
-  font-family: var(--font-family-header);
+  font-family: var(--font-family-body);
 }
 
 .favorite-btn {

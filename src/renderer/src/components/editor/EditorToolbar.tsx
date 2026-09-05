@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react'
 import { Editor } from '@tiptap/react'
-import { Copy, Minus, Plus } from 'lucide-react'
+import { Copy, Minus, Plus, MoreHorizontal } from 'lucide-react'
 
 import sidebarEnableIcon from '../../assets/icons/sidebar-anable-icon.svg'
 import sidebarDisableIcon from '../../assets/icons/sidebar-disable-icon.svg'
@@ -71,10 +71,28 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
 }) => {
   const [isFontOpen, setIsFontOpen] = useState(false)
   const [isColorOpen, setIsColorOpen] = useState(false)
+  const [isOverflowOpen, setIsOverflowOpen] = useState(false)
   const [fontSizeDraft, setFontSizeDraft] = useState(DEFAULT_FONT_SIZE)
+  // Which of the two least-essential groups (text formatting, alignment)
+  // have been moved into the overflow "more tools" dropdown because they
+  // no longer fit in the toolbar's current width.
+  const [collapsed, setCollapsed] = useState({ group3: false, group4: false })
   const fontRef = useRef<HTMLDivElement>(null)
   const colorRef = useRef<HTMLDivElement>(null)
+  const overflowRef = useRef<HTMLDivElement>(null)
+  const toolbarRef = useRef<HTMLDivElement>(null)
+  const group3Ref = useRef<HTMLDivElement>(null)
+  const group4Ref = useRef<HTMLDivElement>(null)
+  const divider3Ref = useRef<HTMLDivElement>(null)
+  const divider4Ref = useRef<HTMLDivElement>(null)
   const fontSizeSelectionRef = useRef<{ from: number; to: number } | null>(null)
+  const overflowMeasurementsRef = useRef<{
+    essentialWidth: number
+    divider3Width: number
+    group3Width: number
+    divider4Width: number
+    group4Width: number
+  } | null>(null)
 
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {
@@ -84,9 +102,75 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
       if (colorRef.current && !colorRef.current.contains(e.target as Node)) {
         setIsColorOpen(false)
       }
+      if (overflowRef.current && !overflowRef.current.contains(e.target as Node)) {
+        setIsOverflowOpen(false)
+      }
     }
     document.addEventListener('mousedown', handleOutsideClick)
     return () => document.removeEventListener('mousedown', handleOutsideClick)
+  }, [])
+
+  // Text formatting and alignment are the least essential groups, so
+  // they're the ones that move into a "more tools" dropdown when the
+  // toolbar doesn't have room for everything - rather than letting icons
+  // wrap onto a second line or spill past the panel's edge. Their widths
+  // are fixed (same buttons every render), so measure them once up front
+  // and reuse that on every resize instead of re-measuring each time.
+  const OVERFLOW_BTN_RESERVE = 36
+
+  const evaluateOverflow = () => {
+    const toolbar = toolbarRef.current
+    const m = overflowMeasurementsRef.current
+    if (!toolbar || !m) return
+    const available = toolbar.clientWidth
+    const fullWidth =
+      m.essentialWidth + m.divider3Width + m.group3Width + m.divider4Width + m.group4Width
+
+    if (fullWidth <= available) {
+      setCollapsed({ group3: false, group4: false })
+      return
+    }
+    const withGroup3Only = m.essentialWidth + m.divider3Width + m.group3Width + OVERFLOW_BTN_RESERVE
+    if (withGroup3Only <= available) {
+      setCollapsed({ group3: false, group4: true })
+      return
+    }
+    setCollapsed({ group3: true, group4: true })
+  }
+
+  // Measures once (pre-paint, so a narrow initial window doesn't flash
+  // everything visible first) and immediately evaluates so the first
+  // paint already reflects the right collapsed state.
+  useLayoutEffect(() => {
+    if (overflowMeasurementsRef.current) return
+    const toolbar = toolbarRef.current
+    const group3 = group3Ref.current
+    const group4 = group4Ref.current
+    const divider3 = divider3Ref.current
+    const divider4 = divider4Ref.current
+    if (!toolbar || !group3 || !group4 || !divider3 || !divider4) return
+
+    const group3Width = group3.offsetWidth
+    const group4Width = group4.offsetWidth
+    const divider3Width = divider3.offsetWidth
+    const divider4Width = divider4.offsetWidth
+    overflowMeasurementsRef.current = {
+      essentialWidth:
+        toolbar.scrollWidth - divider3Width - group3Width - divider4Width - group4Width,
+      divider3Width,
+      group3Width,
+      divider4Width,
+      group4Width
+    }
+    evaluateOverflow()
+  }, [])
+
+  useEffect(() => {
+    const toolbar = toolbarRef.current
+    if (!toolbar) return
+    const observer = new ResizeObserver(evaluateOverflow)
+    observer.observe(toolbar)
+    return () => observer.disconnect()
   }, [])
 
   // The slider/stepper own their displayed value locally instead of
@@ -154,8 +238,71 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
     setIsColorOpen(false)
   }
 
+  const boldButton = (
+    <button
+      className={`toolbar-btn ${editor.isActive('bold') ? 'active' : ''}`}
+      onMouseDown={(e) => e.preventDefault()}
+      onClick={() => editor.chain().focus().toggleBold().run()}
+      title="Negrito"
+    >
+      <SvgIcon src={boldIcon} size={15} alt="Negrito" />
+    </button>
+  )
+  const italicButton = (
+    <button
+      className={`toolbar-btn ${editor.isActive('italic') ? 'active' : ''}`}
+      onMouseDown={(e) => e.preventDefault()}
+      onClick={() => editor.chain().focus().toggleItalic().run()}
+      title="Itálico"
+    >
+      <SvgIcon src={italicIcon} size={15} alt="Itálico" />
+    </button>
+  )
+  const underlineButton = (
+    <button
+      className={`toolbar-btn ${editor.isActive('underline') ? 'active' : ''}`}
+      onMouseDown={(e) => e.preventDefault()}
+      onClick={() => editor.chain().focus().toggleUnderline().run()}
+      title="Sublinhado"
+    >
+      <SvgIcon src={underscoreIcon} size={15} alt="Sublinhado" />
+    </button>
+  )
+  const alignLeftButton = (
+    <button
+      className={`toolbar-btn ${editor.isActive({ textAlign: 'left' }) ? 'active' : ''}`}
+      onMouseDown={(e) => e.preventDefault()}
+      onClick={() => editor.chain().focus().setTextAlign('left').run()}
+      title="Alinhar à Esquerda"
+    >
+      <SvgIcon src={alignLeftIcon} size={15} alt="Alinhar à Esquerda" />
+    </button>
+  )
+  const alignCenterButton = (
+    <button
+      className={`toolbar-btn ${editor.isActive({ textAlign: 'center' }) ? 'active' : ''}`}
+      onMouseDown={(e) => e.preventDefault()}
+      onClick={() => editor.chain().focus().setTextAlign('center').run()}
+      title="Centralizar"
+    >
+      <SvgIcon src={alignCenterIcon} size={15} alt="Centralizar" />
+    </button>
+  )
+  const alignRightButton = (
+    <button
+      className={`toolbar-btn ${editor.isActive({ textAlign: 'right' }) ? 'active' : ''}`}
+      onMouseDown={(e) => e.preventDefault()}
+      onClick={() => editor.chain().focus().setTextAlign('right').run()}
+      title="Alinhar à Direita"
+    >
+      <SvgIcon src={alignRightIcon} size={15} alt="Alinhar à Direita" />
+    </button>
+  )
+
+  const hasOverflow = collapsed.group3 || collapsed.group4
+
   return (
-    <div className="editor-toolbar">
+    <div className="editor-toolbar" ref={toolbarRef}>
       {/* Group 1: Sidebar & File Management */}
       <div className="toolbar-group">
         <button
@@ -306,65 +453,58 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
         </div>
       </div>
 
-      <div className="toolbar-divider" />
+      {!collapsed.group3 && <div className="toolbar-divider" ref={divider3Ref} />}
 
       {/* Group 3: Text Formatting */}
-      <div className="toolbar-group">
-        <button
-          className={`toolbar-btn ${editor.isActive('bold') ? 'active' : ''}`}
-          onMouseDown={(e) => e.preventDefault()}
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          title="Negrito"
-        >
-          <SvgIcon src={boldIcon} size={15} alt="Negrito" />
-        </button>
-        <button
-          className={`toolbar-btn ${editor.isActive('italic') ? 'active' : ''}`}
-          onMouseDown={(e) => e.preventDefault()}
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-          title="Itálico"
-        >
-          <SvgIcon src={italicIcon} size={15} alt="Itálico" />
-        </button>
-        <button
-          className={`toolbar-btn ${editor.isActive('underline') ? 'active' : ''}`}
-          onMouseDown={(e) => e.preventDefault()}
-          onClick={() => editor.chain().focus().toggleUnderline().run()}
-          title="Sublinhado"
-        >
-          <SvgIcon src={underscoreIcon} size={15} alt="Sublinhado" />
-        </button>
-      </div>
+      {!collapsed.group3 && (
+        <div className="toolbar-group" ref={group3Ref}>
+          {boldButton}
+          {italicButton}
+          {underlineButton}
+        </div>
+      )}
 
-      <div className="toolbar-divider" />
+      {!collapsed.group4 && <div className="toolbar-divider" ref={divider4Ref} />}
 
       {/* Group 4: Text Alignment */}
-      <div className="toolbar-group">
-        <button
-          className={`toolbar-btn ${editor.isActive({ textAlign: 'left' }) ? 'active' : ''}`}
-          onMouseDown={(e) => e.preventDefault()}
-          onClick={() => editor.chain().focus().setTextAlign('left').run()}
-          title="Alinhar à Esquerda"
-        >
-          <SvgIcon src={alignLeftIcon} size={15} alt="Alinhar à Esquerda" />
-        </button>
-        <button
-          className={`toolbar-btn ${editor.isActive({ textAlign: 'center' }) ? 'active' : ''}`}
-          onMouseDown={(e) => e.preventDefault()}
-          onClick={() => editor.chain().focus().setTextAlign('center').run()}
-          title="Centralizar"
-        >
-          <SvgIcon src={alignCenterIcon} size={15} alt="Centralizar" />
-        </button>
-        <button
-          className={`toolbar-btn ${editor.isActive({ textAlign: 'right' }) ? 'active' : ''}`}
-          onMouseDown={(e) => e.preventDefault()}
-          onClick={() => editor.chain().focus().setTextAlign('right').run()}
-          title="Alinhar à Direita"
-        >
-          <SvgIcon src={alignRightIcon} size={15} alt="Alinhar à Direita" />
-        </button>
-      </div>
+      {!collapsed.group4 && (
+        <div className="toolbar-group" ref={group4Ref}>
+          {alignLeftButton}
+          {alignCenterButton}
+          {alignRightButton}
+        </div>
+      )}
+
+      {hasOverflow && (
+        <div className="dropdown-container toolbar-overflow" ref={overflowRef}>
+          <button
+            className={`toolbar-btn ${isOverflowOpen ? 'active' : ''}`}
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => setIsOverflowOpen(!isOverflowOpen)}
+            title="Mais Ferramentas"
+          >
+            <MoreHorizontal size={15} />
+          </button>
+          {isOverflowOpen && (
+            <div className="dropdown-menu toolbar-overflow-menu">
+              {collapsed.group3 && (
+                <div className="toolbar-group">
+                  {boldButton}
+                  {italicButton}
+                  {underlineButton}
+                </div>
+              )}
+              {collapsed.group4 && (
+                <div className="toolbar-group">
+                  {alignLeftButton}
+                  {alignCenterButton}
+                  {alignRightButton}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }

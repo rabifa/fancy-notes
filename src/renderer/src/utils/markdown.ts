@@ -1,3 +1,28 @@
+// Strips common Markdown syntax (headings, lists, checkboxes, emphasis,
+// links, code, blockquotes, rules) plus any embedded HTML tags down to
+// plain text, for use in note-list previews. Run before collapsing
+// whitespace, since it relies on line boundaries.
+export function toPreviewText(content: string, maxLength = 150): string {
+  const plain = content
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/^\s{0,3}#{1,6}\s+/gm, '')
+    .replace(/^\s{0,3}>\s?/gm, '')
+    .replace(/^\s*[-*+]\s+\[[ xX]\]\s+/gm, '')
+    .replace(/^\s*[-*+]\s+/gm, '')
+    .replace(/^\s*\d+\.\s+/gm, '')
+    .replace(/^\s{0,3}([-*_])\s*(?:\1\s*){2,}$/gm, '')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/(\*\*|__)(.*?)\1/g, '$2')
+    .replace(/(\*|_)(.*?)\1/g, '$2')
+    .replace(/~~(.*?)~~/g, '$1')
+    .replace(/<[^>]*>/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+  return plain.slice(0, maxLength)
+}
+
 export function escapeHtml(text: string): string {
   return text
     .replace(/&/g, '&amp;')
@@ -18,7 +43,15 @@ export function textToHtml(text: string): string {
 export function parseInline(text: string): string {
   let html = text
 
-  // Convert standard markdown inline styles
+  // Combined bold+italic (*** or ___) must be handled before the plain
+  // bold/italic patterns below: matching "**" out of "***text***" first
+  // left one asterisk dangling, which the italic pass then paired with
+  // the wrong side of the string, closing <strong> and <em> out of order
+  // - the malformed HTML the browser "recovered" from by silently
+  // dropping the bold.
+  html = html.replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>')
+  html = html.replace(/___(.*?)___/g, '<strong><em>$1</em></strong>')
+
   // Bold (** or __)
   html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
   html = html.replace(/__(.*?)__/g, '<strong>$1</strong>')
@@ -50,15 +83,26 @@ export function markdownToHtml(markdown: string): string {
     currentListType = null
   }
 
+  // htmlToMarkdown always separates consecutive block elements (a list
+  // followed by a paragraph, two paragraphs, ...) with exactly one blank
+  // line as a structural separator - it doesn't mean there was an actual
+  // empty paragraph there. Only a *second* consecutive blank line (i.e.
+  // the user genuinely left an empty line) should turn into one.
+  let blankRun = 0
+
   for (const line of lines) {
     const trimmed = line.trim()
 
     // Empty lines
     if (trimmed === '') {
+      blankRun += 1
       closeList()
-      result.push('<p></p>')
+      if (blankRun > 1) {
+        result.push('<p></p>')
+      }
       continue
     }
+    blankRun = 0
 
     // Check headings
     const headingMatch = line.match(/^(#{1,6})\s+(.*)$/)

@@ -109,6 +109,19 @@
   user-select: none;
 }
 
+.toolbar-overflow {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.dropdown-menu.toolbar-overflow-menu {
+  left: auto;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 .toolbar-group {
   display: flex;
   align-items: center;
@@ -354,13 +367,16 @@
 /* Editor Content Area */
 .editor-workspace {
   flex: 1;
+  min-width: 0;
   overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
 }
 
 .editor-body {
   flex: 1;
+  min-width: 0;
   padding: 12px 0;
 }
 
@@ -384,6 +400,8 @@
   font-size: 14px;
   line-height: 1.7;
   font-family: var(--font-family-body);
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .ProseMirror:focus {

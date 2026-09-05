@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from 'react'
 import { NoteMetadata } from '../types/vault'
 import { SaveStatus } from '../components/editor/EditorFooter'
+import { toPreviewText } from '../utils/markdown'
 
 export const useNotes = (activeVaultPath: string | null) => {
   const [notes, setNotes] = useState<NoteMetadata[]>([])
@@ -121,11 +122,7 @@ export const useNotes = (activeVaultPath: string | null) => {
             ? {
                 ...note,
                 updatedAt: Date.now(),
-                preview: content
-                  .replace(/<[^>]*>/g, '')
-                  .replace(/\s+/g, ' ')
-                  .trim()
-                  .slice(0, 150)
+                preview: toPreviewText(content)
               }
             : note
         )

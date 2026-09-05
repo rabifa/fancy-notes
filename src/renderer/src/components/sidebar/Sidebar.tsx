@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { PanelLeftClose } from 'lucide-react'
 import SearchBar from './SearchBar'
 import NoteCard from './NoteCard'
 import VaultSelector from './VaultSelector'
@@ -17,6 +18,7 @@ interface SidebarProps {
   notes: NoteMetadata[]
   activeNotePath: string | null
   searchQuery: string
+  isCompact?: boolean
   onSearchChange: (query: string) => void
   onSelectNote: (notePath: string) => void
   onToggleFavorite: (notePath: string) => void
@@ -24,6 +26,7 @@ interface SidebarProps {
   onAddVault: () => void
   onRenameNote: (notePath: string, newTitle: string) => void
   onDeleteNote: (notePath: string) => void
+  onToggleSidebar?: () => void
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -31,13 +34,15 @@ export const Sidebar: React.FC<SidebarProps> = ({
   notes,
   activeNotePath,
   searchQuery,
+  isCompact = false,
   onSearchChange,
   onSelectNote,
   onToggleFavorite,
   onSelectVault,
   onAddVault,
   onRenameNote,
-  onDeleteNote
+  onDeleteNote,
+  onToggleSidebar
 }) => {
   const [width, setWidth] = useState<number>(() => {
     const stored = Number(window.localStorage.getItem(SIDEBAR_WIDTH_STORAGE_KEY))
@@ -82,9 +87,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
   return (
     <>
-      <div className="sidebar" style={{ width }}>
+      <div className="sidebar" style={{ width: isCompact ? '100%' : width }}>
         <div className="sidebar-header">
-          <SearchBar value={searchQuery} onChange={onSearchChange} />
+          <div className="sidebar-header-row">
+            {isCompact && (
+              <button
+                className="sidebar-close-btn"
+                onClick={onToggleSidebar}
+                title="Fechar Barra Lateral"
+              >
+                <PanelLeftClose size={16} />
+              </button>
+            )}
+            <SearchBar value={searchQuery} onChange={onSearchChange} />
+          </div>
         </div>
 
         <div className="sidebar-note-list scrollbar-custom">
@@ -117,7 +133,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           />
         </div>
       </div>
-      <div className="sidebar-resize-handle" onMouseDown={handleResizeStart} />
+      {!isCompact && <div className="sidebar-resize-handle" onMouseDown={handleResizeStart} />}
     </>
   )
 }

@@ -33,13 +33,35 @@ export interface VaultState {
 }
 
 /**
+ * Strips common Markdown syntax (headings, lists, checkboxes, emphasis,
+ * links, code, blockquotes, rules) down to plain text. Run before
+ * collapsing whitespace, since it relies on line boundaries.
+ */
+function stripMarkdownSyntax(text: string): string {
+  return text
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/^\s{0,3}#{1,6}\s+/gm, '')
+    .replace(/^\s{0,3}>\s?/gm, '')
+    .replace(/^\s*[-*+]\s+\[[ xX]\]\s+/gm, '')
+    .replace(/^\s*[-*+]\s+/gm, '')
+    .replace(/^\s*\d+\.\s+/gm, '')
+    .replace(/^\s{0,3}([-*_])\s*(?:\1\s*){2,}$/gm, '')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/(\*\*|__)(.*?)\1/g, '$2')
+    .replace(/(\*|_)(.*?)\1/g, '$2')
+    .replace(/~~(.*?)~~/g, '$1')
+}
+
+/**
  * Gets a clean preview of the file content (up to 150 characters, removing HTML/markdown formatting)
  */
 async function getNotePreview(filePath: string): Promise<string> {
   try {
     const content = await fs.promises.readFile(filePath, 'utf-8')
-    // Remove HTML tags and replace multiple spaces/newlines with a single space
-    const cleanText = content
+    // Strip Markdown syntax and embedded HTML tags, then collapse whitespace
+    const cleanText = stripMarkdownSyntax(content)
       .replace(/<[^>]*>/g, '')
       .replace(/\s+/g, ' ')
       .trim()
