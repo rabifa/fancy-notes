@@ -321,12 +321,13 @@
 
 .color-dropdown {
   padding: 8px;
-  min-width: 132px;
+  width: fit-content;
+  box-sizing: border-box;
 }
 
 .color-palette {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 22px);
   gap: 6px;
   margin-bottom: 8px;
 }
@@ -348,42 +349,6 @@
 .color-swatch.active {
   border-color: #ffffff;
   box-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
-}
-
-.custom-color-input-container {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  border-top: 1px solid var(--border-color);
-  padding-top: 8px;
-  margin-top: 4px;
-}
-
-.custom-color-input {
-  -webkit-appearance: none;
-  border: none;
-  width: 22px;
-  height: 22px;
-  border-radius: 4px;
-  background: transparent;
-  cursor: pointer;
-  padding: 0;
-}
-
-.custom-color-input::-webkit-color-swatch-wrapper {
-  padding: 0;
-}
-
-.custom-color-input::-webkit-color-swatch {
-  border: 1px solid var(--border-color);
-  border-radius: 4px;
-}
-
-.custom-color-label {
-  font-size: 9px;
-  font-family: var(--font-family-header);
-  color: var(--text-muted);
-  letter-spacing: 1px;
 }
 
 /* Editor Content Area */

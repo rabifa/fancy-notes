@@ -38,6 +38,18 @@ const DEFAULT_FONT_SIZE = 16
 const MIN_FONT_SIZE = 8
 const MAX_FONT_SIZE = 72
 
+// Pasted content often carries colors as rgb()/rgba() strings, which the
+// highlighter icon preview only understands as hex.
+const toHexColor = (color: string): string => {
+  if (/^#[0-9a-f]{6}$/i.test(color)) return color
+  const match = color.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i)
+  if (match) {
+    const [, r, g, b] = match
+    return `#${[r, g, b].map((c) => Number(c).toString(16).padStart(2, '0')).join('')}`
+  }
+  return '#ffffff'
+}
+
 const NEON_COLORS = [
   { name: 'White', value: '#ffffff' },
   { name: 'Pink Neon', value: '#ff007f' },
@@ -100,18 +112,6 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
 
   if (!editor) return null
 
-  // Pasted content often carries colors as rgb()/rgba() strings, which the
-  // native <input type="color"> silently rejects (it only accepts #rrggbb).
-  const toHexColor = (color: string): string => {
-    if (/^#[0-9a-f]{6}$/i.test(color)) return color
-    const match = color.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i)
-    if (match) {
-      const [, r, g, b] = match
-      return `#${[r, g, b].map((c) => Number(c).toString(16).padStart(2, '0')).join('')}`
-    }
-    return '#ffffff'
-  }
-
   const getActiveColor = () => {
     const attrs = editor.getAttributes('textStyle')
     return toHexColor(attrs.color || '#ffffff')
@@ -143,8 +143,14 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
 
   const adjustFontSize = (delta: number) => applyFontSize(fontSizeDraft + delta)
 
+  // Re-asserts the selection captured when the dropdown opened before
+  // applying the color - see the effect above for why that's necessary.
+  // Predefined colors don't need the selection to stay highlighted
+  // afterward - apply the mark, then collapse the selection to its end
+  // so the cursor just sits after the now-colored text.
   const setColor = (colorValue: string) => {
-    editor.chain().focus().setColor(colorValue).run()
+    const { to } = editor.state.selection
+    editor.chain().focus().setColor(colorValue).setTextSelection(to).run()
     setIsColorOpen(false)
   }
 
@@ -294,16 +300,6 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
                     />
                   )
                 })}
-              </div>
-              <div className="custom-color-input-container">
-                <input
-                  type="color"
-                  value={getActiveColor()}
-                  onChange={(e) => editor.chain().focus().setColor(e.target.value).run()}
-                  className="custom-color-input"
-                  title="Cor personalizada"
-                />
-                <span className="custom-color-label">Dropper</span>
               </div>
             </div>
           )}
