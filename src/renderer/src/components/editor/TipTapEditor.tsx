@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import Underline from '@tiptap/extension-underline'
 import { TextStyle, FontSize } from '@tiptap/extension-text-style'
 import Color from '@tiptap/extension-color'
 import FontFamily from '@tiptap/extension-font-family'
@@ -46,9 +45,17 @@ export const TipTapEditor: React.FC<TipTapEditorProps> = ({
         // TaskList handles list items separately
         bulletList: {},
         orderedList: {},
-        listItem: {}
+        listItem: {},
+        // Not used by this app, and listKeymap's own Backspace handling
+        // for "taskItem"/"taskList" duplicates TaskItem's own keymap below.
+        link: false,
+        listKeymap: false,
+        // Auto-inserts an empty paragraph after the document's last node
+        // whenever it isn't a paragraph - fires on every keystroke while
+        // a task list is the last thing in the note, fighting TaskItem's
+        // own Enter handling and corrupting new checklist lines.
+        trailingNode: false
       }),
-      Underline,
       TextStyle,
       Color,
       FontFamily,
