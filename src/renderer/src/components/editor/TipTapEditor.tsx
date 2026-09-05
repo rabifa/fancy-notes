@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Underline from '@tiptap/extension-underline'
-import { TextStyle } from '@tiptap/extension-text-style'
+import { TextStyle, FontSize } from '@tiptap/extension-text-style'
 import Color from '@tiptap/extension-color'
 import FontFamily from '@tiptap/extension-font-family'
 import TextAlign from '@tiptap/extension-text-align'
@@ -52,6 +52,7 @@ export const TipTapEditor: React.FC<TipTapEditorProps> = ({
       TextStyle,
       Color,
       FontFamily,
+      FontSize,
       TextAlign.configure({
         types: ['heading', 'paragraph']
       }),
@@ -129,9 +130,6 @@ export const TipTapEditor: React.FC<TipTapEditorProps> = ({
         <p className="empty-state-title">
           <span className="logo-vault">VAULT</span>
           <span className="logo-notes">NOTES</span>
-        </p>
-        <p className="empty-state-text">
-          Selecione uma nota na sidebar ou crie uma nova para começar a editar.
         </p>
       </div>
     )

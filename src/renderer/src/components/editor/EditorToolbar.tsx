@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Editor } from '@tiptap/react'
-import { Copy } from 'lucide-react'
+import { Copy, Minus, Plus } from 'lucide-react'
 
 import sidebarEnableIcon from '../../assets/icons/sidebar-anable-icon.svg'
 import sidebarDisableIcon from '../../assets/icons/sidebar-disable-icon.svg'
@@ -34,6 +34,10 @@ const FONTS = [
   { name: 'Arial', value: 'Arial, sans-serif' }
 ]
 
+const DEFAULT_FONT_SIZE = 16
+const MIN_FONT_SIZE = 8
+const MAX_FONT_SIZE = 72
+
 const NEON_COLORS = [
   { name: 'White', value: '#ffffff' },
   { name: 'Pink Neon', value: '#ff007f' },
@@ -55,8 +59,10 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
 }) => {
   const [isFontOpen, setIsFontOpen] = useState(false)
   const [isColorOpen, setIsColorOpen] = useState(false)
+  const [fontSizeDraft, setFontSizeDraft] = useState(DEFAULT_FONT_SIZE)
   const fontRef = useRef<HTMLDivElement>(null)
   const colorRef = useRef<HTMLDivElement>(null)
+  const fontSizeSelectionRef = useRef<{ from: number; to: number } | null>(null)
 
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {
@@ -70,6 +76,27 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
     document.addEventListener('mousedown', handleOutsideClick)
     return () => document.removeEventListener('mousedown', handleOutsideClick)
   }, [])
+
+  // The slider/stepper own their displayed value locally instead of
+  // re-reading editor.getAttributes() on every render: that read reflects
+  // whatever is under the (possibly mixed) selection and can disagree with
+  // what was just set, which fights a controlled <input type="range"> mid-drag.
+  // Sync the draft once when the dropdown opens, then let the controls drive it.
+  //
+  // Also snapshot the selection at that moment: focusing the range input
+  // makes the browser drop the native text selection, and once that
+  // happens the editor has nothing left to apply the size to. Re-applying
+  // this stored range before every change sidesteps that entirely.
+  useEffect(() => {
+    if (!isFontOpen || !editor) return
+    const raw = editor.getAttributes('textStyle').fontSize as string | undefined
+    const parsed = raw ? parseInt(raw, 10) : NaN
+    setFontSizeDraft(Number.isFinite(parsed) ? parsed : DEFAULT_FONT_SIZE)
+    fontSizeSelectionRef.current = {
+      from: editor.state.selection.from,
+      to: editor.state.selection.to
+    }
+  }, [isFontOpen, editor])
 
   if (!editor) return null
 
@@ -94,6 +121,27 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
     editor.chain().focus().setFontFamily(fontValue).run()
     setIsFontOpen(false)
   }
+
+  const fontSizeSliderFillPercent =
+    ((fontSizeDraft - MIN_FONT_SIZE) / (MAX_FONT_SIZE - MIN_FONT_SIZE)) * 100
+
+  // Never chains .focus() here: stealing DOM focus back to the editor mid-drag
+  // is what made the range input's native drag gesture break intermittently.
+  // Re-asserting the stored selection (see the effect above) is what makes
+  // this keep applying to the right text even after the browser has visibly
+  // dropped the selection because focus moved to the slider.
+  const applyFontSize = (next: number) => {
+    const clamped = Math.min(MAX_FONT_SIZE, Math.max(MIN_FONT_SIZE, next))
+    setFontSizeDraft(clamped)
+    const sel = fontSizeSelectionRef.current
+    const chain = editor.chain()
+    if (sel && sel.from !== sel.to) {
+      chain.setTextSelection(sel)
+    }
+    chain.setFontSize(`${clamped}px`).run()
+  }
+
+  const adjustFontSize = (delta: number) => applyFontSize(fontSizeDraft + delta)
 
   const setColor = (colorValue: string) => {
     editor.chain().focus().setColor(colorValue).run()
@@ -167,6 +215,37 @@ export const EditorToolbar: React.FC<EditorToolbarProps> = ({
           </button>
           {isFontOpen && (
             <div className="dropdown-menu font-dropdown">
+              <div className="font-size-control">
+                <button
+                  className="font-size-btn"
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => adjustFontSize(-1)}
+                  title="Diminuir tamanho da fonte"
+                >
+                  <Minus size={12} />
+                </button>
+                <span className="font-size-value">{fontSizeDraft}px</span>
+                <button
+                  className="font-size-btn"
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => adjustFontSize(1)}
+                  title="Aumentar tamanho da fonte"
+                >
+                  <Plus size={12} />
+                </button>
+              </div>
+              <input
+                type="range"
+                className="font-size-slider"
+                min={MIN_FONT_SIZE}
+                max={MAX_FONT_SIZE}
+                value={fontSizeDraft}
+                style={{
+                  background: `linear-gradient(to right, var(--cyan-neon) ${fontSizeSliderFillPercent}%, var(--bg-control) ${fontSizeSliderFillPercent}%)`
+                }}
+                onChange={(e) => applyFontSize(Number(e.target.value))}
+              />
+              <div className="dropdown-divider-thin" />
               {FONTS.map((font) => (
                 <button
                   key={font.name}
