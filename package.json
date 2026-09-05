@@ -1,7 +1,7 @@
 {
-  "name": "fancynotes",
+  "name": "vault-notes",
   "version": "1.0.0",
-  "description": "Simple text editor with a fancy/cool and modern look than the traditional one from Mycrosoft Windowns.",
+  "description": "A fast, keyboard-friendly note-taking desktop app with a dark, neon-accented look.",
   "main": "./out/main/index.js",
   "author": "Raphael Faria",
   "homepage": "https://electron-vite.org",

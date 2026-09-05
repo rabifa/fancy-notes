@@ -1,21 +1,57 @@
 # Vault Notes
 
-Simple text editor with a fancy/cool and modern look than the traditional one from Mycrosoft Windowns.
+Um app de notas para desktop, rápido e com boa experiência de teclado, com visual escuro e detalhes neon. As notas ficam salvas como arquivos Markdown (ou `.txt`) numa pasta do seu disco — o seu próprio "vault" — então elas continuam portáveis e legíveis fora do app também.
 
 <div align="center">
 
-  ![Vault Notes Screenshot](https://github.com/rabifa/fancynotes/blob/main/FancyNotes.png "Vault Notes Screenshot")
+  ![Vault Notes Screenshot](./VaultNotes.png "Vault Notes Screenshot")
 
-  <!-- License -->
   <a href="./LICENSE" target="_blank">
       <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-8A2BE2?style=for-the-badge&labelColor=1C1E26&color=8A2BE2">
   </a>
+  <img alt="Electron" src="https://img.shields.io/badge/Electron-2B2E3A?style=for-the-badge&logo=electron&logoColor=9FEAF9&labelColor=1C1E26">
+  <img alt="React" src="https://img.shields.io/badge/React-2B2E3A?style=for-the-badge&logo=react&logoColor=61DAFB&labelColor=1C1E26">
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-2B2E3A?style=for-the-badge&logo=typescript&logoColor=3178C6&labelColor=1C1E26">
+  <img alt="Tiptap" src="https://img.shields.io/badge/Tiptap-2B2E3A?style=for-the-badge&logo=tiptap&logoColor=FFFFFF&labelColor=1C1E26">
+  <img alt="Vite" src="https://img.shields.io/badge/Vite-2B2E3A?style=for-the-badge&logo=vite&logoColor=BD34FE&labelColor=1C1E26">
 </div>
 
-You can also see on Figma: [Click here](https://www.figma.com/design/PpgeYgFa4v3ie940ST2KNE/Vault-Notes)
+## Funcionalidades
 
-## Tecnology
+- **Vaults** — escolha qualquer pasta do disco como vault e alterne entre vários vaults; as notas são salvas como arquivos `.md`/`.txt` de verdade, não presas num banco de dados.
+- **Edição de texto rica** — negrito, itálico, sublinhado, família e tamanho de fonte, cor de texto personalizada, alinhamento de texto e checklists, com tudo baseado em Markdown para o formato ir e voltar do disco sem perdas.
+- **Sidebar** — busca de notas, favoritos, renomear direto na lista, excluir para a lixeira e redimensionar a largura da sidebar como preferir.
+- **Estatísticas ao vivo** — contagem de palavras e caracteres atualizada enquanto você digita.
+- **Layout responsivo** — a janela redimensiona até 400px de largura, escondendo a sidebar automaticamente quando não há espaço para ela e o editor juntos.
+- **Tema escuro neon** — identidade visual própria em ciano/magenta em todo o app.
 
-- Electron
-- React
-- Typescript
+## Desenvolvimento
+
+### IDE recomendada
+
+- [VSCode](https://code.visualstudio.com/) + [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) + [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+
+### Instalar
+
+```bash
+npm install
+```
+
+### Rodar em modo dev
+
+```bash
+npm run dev
+```
+
+### Build
+
+```bash
+# Para Windows
+npm run build:win
+
+# Para macOS
+npm run build:mac
+
+# Para Linux
+npm run build:linux
+```
